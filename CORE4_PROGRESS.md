@@ -14,7 +14,7 @@
 - [x] Literature survey
 - [x] GitHub repository setup
 - [x] Basic project folder structure
-- [ ] Development environment setup
+- [x] Development environment setup
 - [ ] Dataset finalization
 - [ ] Image preprocessing
 - [ ] Weather data preprocessing
@@ -38,12 +38,16 @@
 - Cloned repository locally
 - Created initial project structure
 - Completed first Git commit and push
+-Python virtual environment created
+-PyTorch with CUDA configured
+-RTX 4050 GPU successfully detected by PyTorch
+-Required ML/project libraries installed
 
 ### Current Task
-- Python environment and GPU/CUDA setup
+- Dataset finalization and preparation
 
 ### Next Task
-- Dataset preparation and model training setup
+- Dataset preprocessing
 
 ---
 
