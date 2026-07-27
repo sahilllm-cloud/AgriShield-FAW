@@ -15,7 +15,7 @@
 - [x] GitHub repository setup
 - [x] Basic project folder structure
 - [x] Development environment setup
-- [ ] Dataset finalization
+- [x] Dataset finalization
 - [ ] Image preprocessing
 - [ ] Weather data preprocessing
 - [ ] Swin Transformer training
@@ -42,12 +42,17 @@
 -PyTorch with CUDA configured
 -RTX 4050 GPU successfully detected by PyTorch
 -Required ML/project libraries installed
+- Corn Leaf Infection Dataset collected
+- Dataset inspected: 4,225 images (2,000 Healthy + 2,225 Infected)
+- Dataset verified with 0 corrupted images
+- Train/Validation/Test split completed (70% / 15% / 15%)
+- Dataset inspection and splitting scripts created
 
-### Current Task
-- Dataset finalization and preparation
+### Current Task:
+Swin Transformer image preprocessing
 
 ### Next Task
-- Dataset preprocessing
+- Create image transforms, DataLoaders, and prepare Swin Transformer training
 
 ---
 
