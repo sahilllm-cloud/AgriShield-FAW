@@ -16,7 +16,7 @@
 - [x] Basic project folder structure
 - [x] Development environment setup
 - [x] Dataset finalization
-- [ ] Image preprocessing
+- [x] Image preprocessing
 - [ ] Weather data preprocessing
 - [ ] Swin Transformer training
 - [ ] LSTM training
@@ -47,6 +47,18 @@
 - Dataset verified with 0 corrupted images
 - Train/Validation/Test split completed (70% / 15% / 15%)
 - Dataset inspection and splitting scripts created
+- Created image preprocessing pipeline
+- Implemented training and evaluation transforms
+- Loaded datasets using ImageFolder
+- Created PyTorch DataLoaders
+- Verified tensor shapes and batch loading
+
+Current Task:
+- Swin Transformer model implementation
+
+
+Next Task:
+-Configure transfer learning and begin model training
 
 ### Current Task:
 Swin Transformer image preprocessing
