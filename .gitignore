@@ -219,3 +219,5 @@ __marimo__/
 
 # AgriShield datasets
 data/images/
+# Trained models
+models/*.pth

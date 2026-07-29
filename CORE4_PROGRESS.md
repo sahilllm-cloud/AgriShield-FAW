@@ -18,10 +18,10 @@
 - [x] Dataset finalization
 - [x] Image preprocessing
 - [ ] Weather data preprocessing
-- [ ] Swin Transformer training
+- [X] Swin Transformer training
 - [ ] LSTM training
 - [ ] LightGBM training
-- [ ] Model evaluation
+- [x] Model evaluation
 - [ ] Risk prediction module
 - [ ] Model integration
 - [ ] Streamlit application
@@ -34,14 +34,16 @@
 **Current Responsibility:** Local model training and development setup
 
 ### Completed
+### Completed
+
 - Created/shared GitHub repository
 - Cloned repository locally
 - Created initial project structure
 - Completed first Git commit and push
--Python virtual environment created
--PyTorch with CUDA configured
--RTX 4050 GPU successfully detected by PyTorch
--Required ML/project libraries installed
+- Python virtual environment created
+- PyTorch with CUDA configured
+- RTX 4050 GPU successfully detected by PyTorch
+- Required ML/project libraries installed
 - Corn Leaf Infection Dataset collected
 - Dataset inspected: 4,225 images (2,000 Healthy + 2,225 Infected)
 - Dataset verified with 0 corrupted images
@@ -52,19 +54,27 @@
 - Loaded datasets using ImageFolder
 - Created PyTorch DataLoaders
 - Verified tensor shapes and batch loading
+- Implemented Swin Transformer model
+- Configured transfer learning
+- Successfully trained Swin Transformer
+- Saved best trained model (`models/swin_best.pth`)
+- Created model evaluation pipeline
+- Evaluated model on test dataset
+- Generated classification report
+- Generated confusion matrix
+- Achieved 99.21% test accuracy
 
-Current Task:
-- Swin Transformer model implementation
-
-
-Next Task:
--Configure transfer learning and begin model training
-
-### Current Task:
-Swin Transformer image preprocessing
+### Current Task
+- Preparing weather dataset for outbreak prediction
 
 ### Next Task
-- Create image transforms, DataLoaders, and prepare Swin Transformer training
+
+- Preprocess weather/time-series dataset
+- Implement LSTM forecasting model
+- Train LightGBM model
+- Develop hybrid pest outbreak prediction module
+
+
 
 ---
 
