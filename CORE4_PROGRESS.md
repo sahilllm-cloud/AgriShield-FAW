@@ -125,18 +125,42 @@
 
 ## Sangamesh
 
-**Current Responsibility:** To be assigned
+**Current Responsibility:** Weather Forecasting & Risk Prediction
 
 ### Completed
-- None recorded yet
+
+- Finalized NASA POWER Mysuru weather dataset (2015–2025)
+- Implemented complete weather preprocessing pipeline
+- Built custom WeatherDataset for time-series sequence generation
+- Developed multi-output LSTM forecasting model
+- Forecasted Temperature (T2M), Humidity (RH2M), Wind Speed (WS2M), Surface Pressure (PS) and Rainfall (PRECTOTCORR)
+- Implemented training and validation pipeline
+- Saved best LSTM model (`models/lstm_best.pth`)
+- Built evaluation pipeline with prediction CSVs and plots
+- Designed weighted weather risk-score generation
+- Generated balanced Low / Medium / High risk labels
+- Trained multiclass LightGBM classifier
+- Saved best LightGBM model (`models/lightgbm_best.pkl`)
+- Generated classification report, confusion matrix and feature importance plot
+
+### Results
+
+- LSTM Temperature R²: 0.8848
+- LSTM Humidity R²: 0.8977
+- LSTM Wind Speed R²: 0.7859
+- LSTM Pressure R²: 0.8263
+- LSTM Rainfall R²: 0.1540
+- LightGBM Accuracy: 98.15%
 
 ### Current Task
-- To be assigned
+
+- Integrating weather forecasting with the crop disease detection module
 
 ### Next Task
-- To be assigned
 
----
+- Hybrid system integration
+- Streamlit dashboard
+- End-to-end testing
 
 ## Sai
 
