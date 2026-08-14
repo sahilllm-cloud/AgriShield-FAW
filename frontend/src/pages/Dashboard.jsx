@@ -1,7 +1,109 @@
+import { useEffect, useState } from "react";
 import RiskChart from "../components/RiskChart";
 import RiskBadge from "../components/RiskBadge";
 
 function Dashboard() {
+  const [risk, setRisk] = useState("Low");
+  const [weather, setWeather] = useState(() => {
+    const savedTemperature = localStorage.getItem("Temperature_C");
+    const savedHumidity = localStorage.getItem("Humidity_%");
+    const savedRainfall = localStorage.getItem("Rainfall_mm");
+    const savedWindSpeed = localStorage.getItem("Wind_Speed_kmph");
+
+    return {
+      location: "Bengaluru",
+      temperature: savedTemperature ? Number(savedTemperature) : 28,
+      humidity: savedHumidity ? Number(savedHumidity) : 75,
+      rainfall: savedRainfall ? Number(savedRainfall) : 10,
+      windSpeed: savedWindSpeed ? Number(savedWindSpeed) : 8,
+    };
+  });
+
+  const fetchLiveWeather = async () => {
+    const fallbackWeather = {
+      location: "Bengaluru",
+      temperature: 28,
+      humidity: 75,
+      rainfall: 10,
+      windSpeed: 8,
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/weather/live");
+      if (!response.ok) {
+        throw new Error("Live weather request failed");
+      }
+
+      const data = await response.json();
+      const savedTemperature = localStorage.getItem("Temperature_C");
+      const savedHumidity = localStorage.getItem("Humidity_%");
+      const savedRainfall = localStorage.getItem("Rainfall_mm");
+      const savedWindSpeed = localStorage.getItem("Wind_Speed_kmph");
+
+      setWeather({
+        location: data.location || "Bengaluru",
+        temperature: data.temperature ?? (savedTemperature ? Number(savedTemperature) : fallbackWeather.temperature),
+        humidity: data.humidity ?? (savedHumidity ? Number(savedHumidity) : fallbackWeather.humidity),
+        rainfall: data.rainfall ?? (savedRainfall ? Number(savedRainfall) : fallbackWeather.rainfall),
+        windSpeed: data.wind_speed ?? (savedWindSpeed ? Number(savedWindSpeed) : fallbackWeather.windSpeed),
+      });
+    } catch (error) {
+      const savedTemperature = localStorage.getItem("Temperature_C");
+      const savedHumidity = localStorage.getItem("Humidity_%");
+      const savedRainfall = localStorage.getItem("Rainfall_mm");
+      const savedWindSpeed = localStorage.getItem("Wind_Speed_kmph");
+
+      setWeather({
+        location: "Bengaluru",
+        temperature: savedTemperature ? Number(savedTemperature) : fallbackWeather.temperature,
+        humidity: savedHumidity ? Number(savedHumidity) : fallbackWeather.humidity,
+        rainfall: savedRainfall ? Number(savedRainfall) : fallbackWeather.rainfall,
+        windSpeed: savedWindSpeed ? Number(savedWindSpeed) : fallbackWeather.windSpeed,
+      });
+    }
+  };
+
+  const fetchRisk = async () => {
+    const response = await fetch("http://127.0.0.1:8000/api/predict/weather", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Month: 6,
+        Temperature_C: 28,
+        "Humidity_%": 75,
+        Rainfall_mm: 10,
+        "Soil_Moisture_%": 55,
+        Wind_Speed_kmph: 8,
+        Crop_Stage: "vegetative",
+        Previous_Pest_Count: 2,
+        Days_Since_Last_Attack: 7,
+      }),
+    });
+    const data = await response.json();
+    setRisk(data.risk_level);
+  };
+
+  useEffect(() => {
+    fetchRisk();
+    fetchLiveWeather();
+
+    const savedTemperature = localStorage.getItem("Temperature_C");
+    const savedHumidity = localStorage.getItem("Humidity_%");
+    const savedRainfall = localStorage.getItem("Rainfall_mm");
+    const savedWindSpeed = localStorage.getItem("Wind_Speed_kmph");
+
+    setWeather((currentWeather) => ({
+      ...currentWeather,
+      location: "Bengaluru",
+      temperature: savedTemperature ? Number(savedTemperature) : currentWeather.temperature,
+      humidity: savedHumidity ? Number(savedHumidity) : currentWeather.humidity,
+      rainfall: savedRainfall ? Number(savedRainfall) : currentWeather.rainfall,
+      windSpeed: savedWindSpeed ? Number(savedWindSpeed) : currentWeather.windSpeed,
+    }));
+  }, []);
+
   return (
     <div className="dashboard">
 
@@ -79,7 +181,7 @@ function Dashboard() {
           <h3>Current Risk</h3>
 
           <h2>
-            <RiskBadge level="Low" />
+            <RiskBadge level={risk} />
           </h2>
 
           <p>Outbreak risk level</p>
@@ -102,27 +204,28 @@ function Dashboard() {
       <section className="weather-section">
 
         <h2>Current Weather Conditions</h2>
+        <p>{weather.location}</p>
 
         <div className="weather-cards">
 
           <div className="weather-card">
             <h3>Temperature</h3>
-            <h2>28°C</h2>
+            <h2>{weather.temperature}°C</h2>
           </div>
 
           <div className="weather-card">
             <h3>Humidity</h3>
-            <h2>75%</h2>
+            <h2>{weather.humidity}%</h2>
           </div>
 
           <div className="weather-card">
             <h3>Rainfall</h3>
-            <h2>10 mm</h2>
+            <h2>{weather.rainfall} mm</h2>
           </div>
 
           <div className="weather-card">
             <h3>Wind Speed</h3>
-            <h2>8 km/h</h2>
+            <h2>{weather.windSpeed} km/h</h2>
           </div>
 
         </div>
@@ -245,19 +348,6 @@ function Dashboard() {
         {/* Prediction Models */}
 
         <div className="prediction-pipeline">
-
-          <div className="prediction-model">
-
-            <span>
-              LSTM
-            </span>
-
-            <small>
-              Time-Series Analysis
-            </small>
-
-          </div>
-
 
           <div className="model-plus">
             +

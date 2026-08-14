@@ -15,16 +15,37 @@ function Detection() {
     setResult(null);
   };
 
-  const handleDetection = () => {
+  const handleDetection = async () => {
     if (!selectedImage) return;
 
-    // Temporary frontend result.
-    // Later this will call the Swin Transformer backend.
-    setResult({
-      label: "FAW Detected",
-      confidence: "94.5%",
-      model: "Swin Transformer",
-    });
+    const formData = new FormData();
+    formData.append("file", selectedImage);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/predict/image", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Prediction request failed");
+      }
+
+      const data = await response.json();
+
+      setResult({
+        label: data.predicted_class,
+        confidence: `${(data.confidence * 100).toFixed(1)}%`,
+        model: "Swin Transformer",
+      });
+    } catch (error) {
+      console.error("Detection error:", error);
+      setResult({
+        label: "Prediction failed",
+        confidence: "N/A",
+        model: "Swin Transformer",
+      });
+    }
   };
 
   return (

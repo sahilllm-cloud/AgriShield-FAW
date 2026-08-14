@@ -2852,7 +2852,8 @@ a {
    INPUT
    ========================================================= */
 
-.environment-input input {
+.environment-input input,
+.environment-input select {
   width: 100%;
 
   padding:
@@ -2880,7 +2881,8 @@ a {
     box-shadow 0.2s ease;
 }
 
-.environment-input input:focus {
+.environment-input input:focus,
+.environment-input select:focus {
   border-color:
     #22a052;
 
@@ -2893,6 +2895,82 @@ a {
     #a0aea7;
 
   font-weight: 500;
+}
+
+.environment-input select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding-right: 42px;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23168143' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px 16px;
+}
+
+.live-weather-wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+.live-weather-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 52px;
+
+  padding:
+    15px 22px;
+
+  border:
+    1px solid rgba(16,107,53,0.12);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0c6935,
+      #1b9a4f
+    );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: 0.1px;
+
+  box-shadow:
+    0 12px 28px rgba(16,107,53,0.23);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+  cursor: pointer;
+}
+
+.live-weather-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+  box-shadow: 0 16px 32px rgba(16,107,53,0.28);
+}
+
+.live-weather-button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(34,160,82,0.16),
+    0 12px 28px rgba(16,107,53,0.23);
+}
+
+.live-weather-icon {
+  font-size: 18px;
+  line-height: 1;
 }
 
 
@@ -3235,6 +3313,102 @@ a {
   font-size: 11px;
 }
 
+.prediction-probabilities {
+  margin:
+    0 25px 25px;
+
+  padding:
+    20px 22px 22px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.probability-header {
+  margin-bottom: 14px;
+}
+
+.probability-header span {
+  color:
+    rgba(255,255,255,0.54);
+
+  font-size: 10px;
+
+  font-weight: 850;
+
+  letter-spacing: 1.5px;
+}
+
+.probability-row + .probability-row {
+  margin-top: 14px;
+}
+
+.probability-label-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+
+  color:
+    white;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.probability-label-row span {
+  color:
+    rgba(255,255,255,0.86);
+}
+
+.probability-label-row strong {
+  color:
+    #ffe39a;
+
+  font-size: 12px;
+}
+
+.probability-bar {
+  width: 100%;
+  height: 11px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.probability-bar span {
+  display: block;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #f0c867,
+      #89e7a8
+    );
+
+  box-shadow:
+    0 0 18px rgba(136, 231, 168, 0.35);
+}
+
 
 /* =========================================================
    RESPONSIVE
@@ -3277,7 +3451,8 @@ a {
       18px;
   }
 
-  .prediction-final {
+  .prediction-final,
+  .prediction-probabilities {
     margin:
       0 18px 18px;
   }
