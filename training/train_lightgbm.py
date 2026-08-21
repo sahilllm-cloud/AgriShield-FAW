@@ -13,56 +13,71 @@ from sklearn.metrics import (
 
 import joblib
 
+
 # ==========================================
-# Load Dataset
+# Load FAW Dataset
 # ==========================================
 
 DATA_PATH = Path(
-    "data/weather/raw/Fall_Armyworm_Maize_Weather_Dataset_1000.csv"
+    "data/faw/FAW_Maize_Karnataka_Dataset_rebalanced.csv"
 )
 
 df = pd.read_csv(DATA_PATH)
 
-print("\nDataset Loaded Successfully!")
+print("\nFAW Dataset Loaded Successfully!")
 print("-" * 50)
 
 print(f"Rows    : {df.shape[0]}")
 print(f"Columns : {df.shape[1]}")
 
+
 # ==========================================
-# Encode Labels
+# Encode Categorical Features
 # ==========================================
 
-crop_encoder = LabelEncoder()
+district_encoder = LabelEncoder()
+taluk_encoder = LabelEncoder()
+village_encoder = LabelEncoder()
+crop_stage_encoder = LabelEncoder()
+variety_encoder = LabelEncoder()
 risk_encoder = LabelEncoder()
 
-df["Crop_Stage"] = crop_encoder.fit_transform(
-    df["Crop_Stage"]
-)
+df["District"] = district_encoder.fit_transform(df["District"])
+df["Taluk"] = taluk_encoder.fit_transform(df["Taluk"])
+df["Village"] = village_encoder.fit_transform(df["Village"])
+df["Crop_Stage"] = crop_stage_encoder.fit_transform(df["Crop_Stage"])
+df["Maize_Variety"] = variety_encoder.fit_transform(df["Maize_Variety"])
 
-df["Risk_Level"] = risk_encoder.fit_transform(
-    df["Risk_Level"]
-)
+df["Risk_Level"] = risk_encoder.fit_transform(df["Risk_Level"])
+
 
 # ==========================================
 # Feature Selection
 # ==========================================
 
 features = [
+    "District",
+    "Taluk",
+    "Village",
+    "Latitude",
+    "Longitude",
     "Month",
+    "Year",
     "Temperature_C",
     "Humidity_%",
     "Rainfall_mm",
     "Soil_Moisture_%",
     "Wind_Speed_kmph",
     "Crop_Stage",
+    "Maize_Variety",
+    "Crop_Age_Days",
     "Previous_Pest_Count",
     "Days_Since_Last_Attack"
 ]
 
 X = df[features]
-
 y = df["Risk_Level"]
+
 
 # ==========================================
 # Train-Test Split
@@ -81,6 +96,8 @@ print("-" * 50)
 
 print("Training Samples :", len(X_train))
 print("Testing Samples  :", len(X_test))
+
+
 # ==========================================
 # Create LightGBM Model
 # ==========================================
@@ -93,6 +110,8 @@ model = LGBMClassifier(
 )
 
 print("\nLightGBM Model Created Successfully!")
+
+
 # ==========================================
 # Train Model
 # ==========================================
@@ -102,12 +121,16 @@ print("-" * 50)
 
 model.fit(X_train, y_train)
 
-print("✅ Training Completed!")
+print("Training Completed!")
+
+
 # ==========================================
 # Predictions
 # ==========================================
 
 predictions = model.predict(X_test)
+
+
 # ==========================================
 # Accuracy
 # ==========================================
@@ -118,19 +141,25 @@ print("\n" + "=" * 40)
 print(f"Test Accuracy : {accuracy * 100:.2f}%")
 print("=" * 40)
 
+
+# ==========================================
+# Classification Report
+# ==========================================
+
 print("\nClassification Report\n")
 
 print(
     classification_report(
         y_test,
         predictions,
-        target_names=[
-            "High",
-            "Low",
-            "Medium"
-        ]
+        target_names=risk_encoder.classes_
     )
 )
+
+
+# ==========================================
+# Confusion Matrix
+# ==========================================
 
 print("\nConfusion Matrix\n")
 
@@ -139,16 +168,42 @@ print(
         y_test,
         predictions
     )
-)# ==========================================
+)
+
+
+# ==========================================
 # Save Model
 # ==========================================
 
 joblib.dump(
     model,
-    "models/lightgbm_model.pkl"
+    "models/lightgbm_faw_model.pkl"
 )
 
-print("\n✅ LightGBM model saved successfully!")
+print("\nLightGBM FAW model saved successfully!")
+
+
+# ==========================================
+# Save Encoders
+# ==========================================
+
+encoders = {
+    "district": district_encoder,
+    "taluk": taluk_encoder,
+    "village": village_encoder,
+    "crop_stage": crop_stage_encoder,
+    "maize_variety": variety_encoder,
+    "risk": risk_encoder
+}
+
+joblib.dump(
+    encoders,
+    "models/faw_encoders.pkl"
+)
+
+print("FAW encoders saved successfully!")
+
+
 # ==========================================
 # Feature Importance
 # ==========================================

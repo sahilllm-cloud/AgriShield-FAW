@@ -13,6 +13,7 @@ import timm
 import torch
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from database.database import get_connection, find_nearest_faw_record
 from PIL import Image, UnidentifiedImageError
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 from torchvision import transforms
@@ -28,7 +29,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[    "http://localhost:5173",    "http://127.0.0.1:5173",],
+   allow_origins=[
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -80,8 +86,7 @@ class WeatherRiskRequest(BaseModel):
         }
         normalized = str(value).strip().lower()
         return mapping.get(normalized, 1)
-
-
+    
 @app.get("/health")
 def health() -> dict[str, Any]:
     return {
@@ -131,6 +136,156 @@ def get_live_weather() -> dict[str, Any]:
         "soil_moisture": soil_moisture,
     }
 
+@app.get("/api/faw/records")
+def get_faw_records(limit: int = 10) -> dict[str, Any]:
+    connection = get_connection()
+
+    query = """
+        SELECT *
+        FROM faw_records
+        LIMIT ?
+    """
+
+    df = pd.read_sql_query(query, connection, params=(limit,))
+    connection.close()
+
+    return {
+        "count": len(df),
+        "records": df.to_dict(orient="records"),
+    }
+
+@app.get("/api/faw/location")
+def get_faw_location(latitude: float, longitude: float) -> dict[str, Any]:
+    record = find_nearest_faw_record(latitude, longitude)
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail="No FAW field record found.",
+        )
+
+    return {
+        "location": {
+            "latitude": record["Latitude"],
+            "longitude": record["Longitude"],
+            "district": record["District"],
+            "taluk": record["Taluk"],
+            "village": record["Village"],
+        },
+        "conditions": {
+            "month": record["Month"],
+            "year": record["Year"],
+            "temperature": record["Temperature_C"],
+            "humidity": record["Humidity_%"],
+            "rainfall": record["Rainfall_mm"],
+            "soil_moisture": record["Soil_Moisture_%"],
+            "wind_speed": record["Wind_Speed_kmph"],
+            "crop_stage": record["Crop_Stage"],
+            "maize_variety": record["Maize_Variety"],
+            "crop_age_days": record["Crop_Age_Days"],
+            "previous_pest_count": record["Previous_Pest_Count"],
+            "days_since_last_attack": record["Days_Since_Last_Attack"],
+            "risk_level": record["Risk_Level"],
+        },
+    }
+@app.get("/api/faw/predict-location")
+def predict_faw_from_location(
+    latitude: float,
+    longitude: float,
+) -> dict[str, Any]:
+    record = find_nearest_faw_record(latitude, longitude)
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail="No FAW field record found.",
+        )
+
+    model_path = MODELS_DIR / "lightgbm_faw_model.pkl"
+    encoders_path = MODELS_DIR / "faw_encoders.pkl"
+
+    if not model_path.exists():
+        raise HTTPException(status_code=500, detail="FAW model not found.")
+
+    if not encoders_path.exists():
+        raise HTTPException(status_code=500, detail="FAW encoders not found.")
+
+    model = joblib.load(model_path)
+    encoders = joblib.load(encoders_path)
+
+    try:
+        features = [
+            encoders["district"].transform([record["District"]])[0],
+            encoders["taluk"].transform([record["Taluk"]])[0],
+            encoders["village"].transform([record["Village"]])[0],
+            record["Latitude"],
+            record["Longitude"],
+            record["Month"],
+            record["Year"],
+            record["Temperature_C"],
+            record["Humidity_%"],
+            record["Rainfall_mm"],
+            record["Soil_Moisture_%"],
+            record["Wind_Speed_kmph"],
+            encoders["crop_stage"].transform([record["Crop_Stage"]])[0],
+            encoders["maize_variety"].transform([record["Maize_Variety"]])[0],
+            record["Crop_Age_Days"],
+            record["Previous_Pest_Count"],
+            record["Days_Since_Last_Attack"],
+        ]
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Encoder error: {exc}",
+        ) from exc
+
+    feature_names = [
+        "District",
+        "Taluk",
+        "Village",
+        "Latitude",
+        "Longitude",
+        "Month",
+        "Year",
+        "Temperature_C",
+        "Humidity_%",
+        "Rainfall_mm",
+        "Soil_Moisture_%",
+        "Wind_Speed_kmph",
+        "Crop_Stage",
+        "Maize_Variety",
+        "Crop_Age_Days",
+        "Previous_Pest_Count",
+        "Days_Since_Last_Attack",
+    ]
+
+    input_df = pd.DataFrame([features], columns=feature_names)
+
+    prediction = int(model.predict(input_df)[0])
+    probabilities = model.predict_proba(input_df)[0]
+
+    risk_encoder = encoders["risk"]
+    risk_label = str(
+        risk_encoder.inverse_transform([prediction])[0]
+    )
+
+    return {
+        "location": {
+            "district": record["District"],
+            "taluk": record["Taluk"],
+            "village": record["Village"],
+            "latitude": record["Latitude"],
+            "longitude": record["Longitude"],
+        },
+        "risk_level": risk_label,
+        "confidence": float(np.max(probabilities)),
+        "probabilities": {
+            str(risk_encoder.inverse_transform([i])[0]): float(
+                probabilities[i]
+            )
+            for i in range(len(probabilities))
+        },
+    }
 
 @app.post("/api/predict/weather")
 def predict_weather_risk(payload: WeatherRiskRequest) -> dict[str, Any]:
