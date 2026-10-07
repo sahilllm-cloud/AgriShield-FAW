@@ -1,0 +1,16 @@
+feature,importance
+Temperature_C,5078
+Humidity_%,3622
+Soil_Moisture_%,3268
+Days_Since_Last_Attack,3049
+Rainfall_mm,3034
+Wind_Speed_kmph,2780
+Pest_Count_per_Days_Since_Attack,2763
+Rainfall_per_Soil_Moisture,2701
+Month,2592
+Pest_Count_x_Humidity,2578
+Temperature_x_Rainfall,2492
+Temperature_x_Humidity,2480
+Humidity_x_Rainfall,2460
+Humidity_x_Pest_per_Temperature,2221
+Previous_Pest_Count,2027

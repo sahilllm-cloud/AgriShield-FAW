@@ -1,0 +1,29 @@
+{
+  "experiment_note": "Leakage-free separate experiment. Only train/validation Swin probabilities were used for the synthetic image-feature pool; test probabilities were used only for final diagnostics.",
+  "dataset_path": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\data\\synthetic_hybrid\\synthetic_maize_faw_train_val_swin_50000.csv",
+  "dataset_rows": 50000,
+  "pool_size": 3590,
+  "pool_source_counts": {
+    "train_probability_images": 2957,
+    "validation_probability_images": 0,
+    "val_probability_images": 633
+  },
+  "train_fields": 400,
+  "test_fields": 100,
+  "params": {
+    "n_estimators": 350,
+    "learning_rate": 0.035,
+    "num_leaves": 63,
+    "max_depth": -1,
+    "subsample": 0.9,
+    "colsample_bytree": 0.9,
+    "reg_lambda": 1.0,
+    "random_state": 42,
+    "verbosity": -1,
+    "n_jobs": -1
+  },
+  "artifacts": {
+    "dataset": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\data\\synthetic_hybrid\\synthetic_maize_faw_train_val_swin_50000.csv",
+    "lightgbm": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\models\\synthetic_hybrid_lightgbm_train_val_swin_experiment.pkl"
+  }
+}

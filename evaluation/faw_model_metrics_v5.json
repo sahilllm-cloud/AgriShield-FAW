@@ -1,0 +1,103 @@
+{
+  "dataset_size": 10000,
+  "class_distribution": {
+    "High": 1370,
+    "Low": 4100,
+    "Medium": 4530
+  },
+  "models": {
+    "HistGradientBoosting": {
+      "metrics": {
+        "accuracy": 0.7925187032418952,
+        "macro_f1": 0.7784017129530948,
+        "weighted_f1": 0.7921206925297521,
+        "high_precision": 0.7574626865671642,
+        "high_recall": 0.6952054794520548,
+        "high_f1": 0.725,
+        "confusion_matrix": [
+          [
+            675,
+            127,
+            6
+          ],
+          [
+            135,
+            711,
+            59
+          ],
+          [
+            4,
+            85,
+            203
+          ]
+        ]
+      },
+      "grouped_cv_macro_f1": 0.7672066106150682
+    },
+    "RandomForest": {
+      "metrics": {
+        "accuracy": 0.7246882793017456,
+        "macro_f1": 0.7126226292260761,
+        "weighted_f1": 0.7249181067768926,
+        "high_precision": 0.6533333333333333,
+        "high_recall": 0.6712328767123288,
+        "high_f1": 0.6621621621621622,
+        "confusion_matrix": [
+          [
+            625,
+            178,
+            5
+          ],
+          [
+            174,
+            632,
+            99
+          ],
+          [
+            1,
+            95,
+            196
+          ]
+        ]
+      },
+      "grouped_cv_macro_f1": 0.7063694200191607
+    },
+    "LightGBM": {
+      "metrics": {
+        "accuracy": 0.7905236907730673,
+        "macro_f1": 0.7788582689637336,
+        "weighted_f1": 0.790147319101577,
+        "high_precision": 0.7610294117647058,
+        "high_recall": 0.708904109589041,
+        "high_f1": 0.7340425531914894,
+        "confusion_matrix": [
+          [
+            675,
+            127,
+            6
+          ],
+          [
+            143,
+            703,
+            59
+          ],
+          [
+            3,
+            82,
+            207
+          ]
+        ]
+      },
+      "grouped_cv_macro_f1": 0.7723000650791475
+    }
+  },
+  "best_model": "LightGBM",
+  "benchmark": {
+    "accuracy": 0.84,
+    "high_precision": 1.0,
+    "high_recall": 0.68,
+    "high_f1": 0.81
+  },
+  "improvement_over_benchmark": false,
+  "model_path": "models\\faw_risk_model_v5.pkl"
+}

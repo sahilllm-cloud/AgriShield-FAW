@@ -1,0 +1,23 @@
+{
+  "evaluation_note": "Metrics are from a synthetic-data holdout and are not real-world FAW accuracy.",
+  "dataset": {
+    "rows": 50000,
+    "fields": 500,
+    "train_rows_after_forecast": 37200,
+    "test_rows_after_forecast": 9300
+  },
+  "lstm": {
+    "training_sequences": 34800.0,
+    "test_weather_metrics": {
+      "mae": 1.7504345178604126,
+      "rmse": 2.477689276123488
+    }
+  },
+  "fusion": {
+    "mae": 0.1259910696109146,
+    "rmse": 0.15773803148437962,
+    "r2": 0.6439249131691476
+  },
+  "examples_path": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\evaluation\\synthetic_hybrid_example_predictions.csv",
+  "lightgbm_num_leaves": 63
+}

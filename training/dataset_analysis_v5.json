@@ -1,0 +1,384 @@
+{
+  "source_row_count": 1000,
+  "columns": [
+    "Sample_ID",
+    "Month",
+    "Temperature_C",
+    "Humidity_%",
+    "Rainfall_mm",
+    "Soil_Moisture_%",
+    "Wind_Speed_kmph",
+    "Crop_Stage",
+    "Previous_Pest_Count",
+    "Days_Since_Last_Attack",
+    "Risk_Level"
+  ],
+  "class_distribution": {
+    "High": 137,
+    "Low": 410,
+    "Medium": 453
+  },
+  "class_proportions": {
+    "High": 0.137,
+    "Low": 0.41,
+    "Medium": 0.453
+  },
+  "numerical_distributions_by_risk": {
+    "High": {
+      "count": 137,
+      "mean": {
+        "Month": 5.9854,
+        "Temperature_C": 27.9292,
+        "Humidity_%": 76.83358,
+        "Rainfall_mm": 110.92774,
+        "Soil_Moisture_%": 41.65109,
+        "Wind_Speed_kmph": 9.64964,
+        "Previous_Pest_Count": 65.16788,
+        "Days_Since_Last_Attack": 27.21168
+      },
+      "std": {
+        "Month": 3.59326,
+        "Temperature_C": 3.41952,
+        "Humidity_%": 11.69819,
+        "Rainfall_mm": 48.46686,
+        "Soil_Moisture_%": 11.78613,
+        "Wind_Speed_kmph": 5.71653,
+        "Previous_Pest_Count": 24.90735,
+        "Days_Since_Last_Attack": 18.29273
+      },
+      "min": {
+        "Month": 1.0,
+        "Temperature_C": 18.1,
+        "Humidity_%": 41.3,
+        "Rainfall_mm": 31.4,
+        "Soil_Moisture_%": 15.2,
+        "Wind_Speed_kmph": 0.0,
+        "Previous_Pest_Count": 3.0,
+        "Days_Since_Last_Attack": 0.0
+      },
+      "max": {
+        "Month": 12.0,
+        "Temperature_C": 35.5,
+        "Humidity_%": 94.4,
+        "Rainfall_mm": 302.6,
+        "Soil_Moisture_%": 59.9,
+        "Wind_Speed_kmph": 19.8,
+        "Previous_Pest_Count": 99.0,
+        "Days_Since_Last_Attack": 60.0
+      }
+    },
+    "Low": {
+      "count": 410,
+      "mean": {
+        "Month": 6.39024,
+        "Temperature_C": 27.9739,
+        "Humidity_%": 62.3978,
+        "Rainfall_mm": 207.53878,
+        "Soil_Moisture_%": 35.6261,
+        "Wind_Speed_kmph": 9.49512,
+        "Previous_Pest_Count": 41.14878,
+        "Days_Since_Last_Attack": 33.67561
+      },
+      "std": {
+        "Month": 3.51162,
+        "Temperature_C": 6.55706,
+        "Humidity_%": 14.72072,
+        "Rainfall_mm": 111.55044,
+        "Soil_Moisture_%": 13.12499,
+        "Wind_Speed_kmph": 5.64766,
+        "Previous_Pest_Count": 27.20159,
+        "Days_Since_Last_Attack": 16.04226
+      },
+      "min": {
+        "Month": 1.0,
+        "Temperature_C": 18.0,
+        "Humidity_%": 40.0,
+        "Rainfall_mm": 0.4,
+        "Soil_Moisture_%": 15.1,
+        "Wind_Speed_kmph": 0.0,
+        "Previous_Pest_Count": 0.0,
+        "Days_Since_Last_Attack": 0.0
+      },
+      "max": {
+        "Month": 12.0,
+        "Temperature_C": 38.0,
+        "Humidity_%": 95.0,
+        "Rainfall_mm": 348.9,
+        "Soil_Moisture_%": 59.8,
+        "Wind_Speed_kmph": 20.0,
+        "Previous_Pest_Count": 98.0,
+        "Days_Since_Last_Attack": 60.0
+      }
+    },
+    "Medium": {
+      "count": 453,
+      "mean": {
+        "Month": 6.59382,
+        "Temperature_C": 27.8543,
+        "Humidity_%": 71.41391,
+        "Rainfall_mm": 158.98035,
+        "Soil_Moisture_%": 39.08962,
+        "Wind_Speed_kmph": 9.86954,
+        "Previous_Pest_Count": 52.10817,
+        "Days_Since_Last_Attack": 29.12804
+      },
+      "std": {
+        "Month": 3.37916,
+        "Temperature_C": 5.38761,
+        "Humidity_%": 15.39016,
+        "Rainfall_mm": 90.41599,
+        "Soil_Moisture_%": 12.32583,
+        "Wind_Speed_kmph": 5.81602,
+        "Previous_Pest_Count": 29.11435,
+        "Days_Since_Last_Attack": 17.89464
+      },
+      "min": {
+        "Month": 1.0,
+        "Temperature_C": 18.0,
+        "Humidity_%": 40.3,
+        "Rainfall_mm": 2.8,
+        "Soil_Moisture_%": 15.0,
+        "Wind_Speed_kmph": 0.1,
+        "Previous_Pest_Count": 0.0,
+        "Days_Since_Last_Attack": 0.0
+      },
+      "max": {
+        "Month": 12.0,
+        "Temperature_C": 38.0,
+        "Humidity_%": 94.8,
+        "Rainfall_mm": 349.1,
+        "Soil_Moisture_%": 60.0,
+        "Wind_Speed_kmph": 20.0,
+        "Previous_Pest_Count": 100.0,
+        "Days_Since_Last_Attack": 60.0
+      }
+    }
+  },
+  "spearman_correlation_matrix": {
+    "Month": {
+      "Month": 1.0,
+      "Temperature_C": 0.03308,
+      "Humidity_%": -0.01086,
+      "Rainfall_mm": 0.00177,
+      "Soil_Moisture_%": -0.03362,
+      "Wind_Speed_kmph": 0.01939,
+      "Previous_Pest_Count": -0.01349,
+      "Days_Since_Last_Attack": -0.02975
+    },
+    "Temperature_C": {
+      "Month": 0.03308,
+      "Temperature_C": 1.0,
+      "Humidity_%": -0.05004,
+      "Rainfall_mm": -0.00233,
+      "Soil_Moisture_%": 0.02104,
+      "Wind_Speed_kmph": -0.02486,
+      "Previous_Pest_Count": -0.05077,
+      "Days_Since_Last_Attack": 0.0034
+    },
+    "Humidity_%": {
+      "Month": -0.01086,
+      "Temperature_C": -0.05004,
+      "Humidity_%": 1.0,
+      "Rainfall_mm": -0.04611,
+      "Soil_Moisture_%": 0.02504,
+      "Wind_Speed_kmph": 0.01661,
+      "Previous_Pest_Count": -0.02131,
+      "Days_Since_Last_Attack": 0.0088
+    },
+    "Rainfall_mm": {
+      "Month": 0.00177,
+      "Temperature_C": -0.00233,
+      "Humidity_%": -0.04611,
+      "Rainfall_mm": 1.0,
+      "Soil_Moisture_%": 0.03322,
+      "Wind_Speed_kmph": -0.00859,
+      "Previous_Pest_Count": 0.02247,
+      "Days_Since_Last_Attack": -0.01056
+    },
+    "Soil_Moisture_%": {
+      "Month": -0.03362,
+      "Temperature_C": 0.02104,
+      "Humidity_%": 0.02504,
+      "Rainfall_mm": 0.03322,
+      "Soil_Moisture_%": 1.0,
+      "Wind_Speed_kmph": -0.02529,
+      "Previous_Pest_Count": 0.01258,
+      "Days_Since_Last_Attack": -0.0021
+    },
+    "Wind_Speed_kmph": {
+      "Month": 0.01939,
+      "Temperature_C": -0.02486,
+      "Humidity_%": 0.01661,
+      "Rainfall_mm": -0.00859,
+      "Soil_Moisture_%": -0.02529,
+      "Wind_Speed_kmph": 1.0,
+      "Previous_Pest_Count": 0.04713,
+      "Days_Since_Last_Attack": -0.05381
+    },
+    "Previous_Pest_Count": {
+      "Month": -0.01349,
+      "Temperature_C": -0.05077,
+      "Humidity_%": -0.02131,
+      "Rainfall_mm": 0.02247,
+      "Soil_Moisture_%": 0.01258,
+      "Wind_Speed_kmph": 0.04713,
+      "Previous_Pest_Count": 1.0,
+      "Days_Since_Last_Attack": 0.02511
+    },
+    "Days_Since_Last_Attack": {
+      "Month": -0.02975,
+      "Temperature_C": 0.0034,
+      "Humidity_%": 0.0088,
+      "Rainfall_mm": -0.01056,
+      "Soil_Moisture_%": -0.0021,
+      "Wind_Speed_kmph": -0.05381,
+      "Previous_Pest_Count": 0.02511,
+      "Days_Since_Last_Attack": 1.0
+    }
+  },
+  "crop_stage_by_risk_row_proportions": {
+    "High": {
+      "Maturity": 0.11458,
+      "Seedling": 0.09155,
+      "Silking": 0.10651,
+      "Tasseling": 0.11111,
+      "Vegetative": 0.16667,
+      "Whorl": 0.22754
+    },
+    "Low": {
+      "Maturity": 0.46354,
+      "Seedling": 0.47887,
+      "Silking": 0.50296,
+      "Tasseling": 0.45062,
+      "Vegetative": 0.29762,
+      "Whorl": 0.26946
+    },
+    "Medium": {
+      "Maturity": 0.42188,
+      "Seedling": 0.42958,
+      "Silking": 0.39053,
+      "Tasseling": 0.43827,
+      "Vegetative": 0.53571,
+      "Whorl": 0.50299
+    }
+  },
+  "pairwise_numeric_relationships": {
+    "Month__Temperature_C": {
+      "spearman_rho": 0.03308,
+      "p_value": 0.29596
+    },
+    "Month__Humidity_%": {
+      "spearman_rho": -0.01086,
+      "p_value": 0.7316
+    },
+    "Month__Rainfall_mm": {
+      "spearman_rho": 0.00177,
+      "p_value": 0.95536
+    },
+    "Month__Soil_Moisture_%": {
+      "spearman_rho": -0.03362,
+      "p_value": 0.28824
+    },
+    "Month__Wind_Speed_kmph": {
+      "spearman_rho": 0.01939,
+      "p_value": 0.54023
+    },
+    "Month__Previous_Pest_Count": {
+      "spearman_rho": -0.01349,
+      "p_value": 0.67002
+    },
+    "Month__Days_Since_Last_Attack": {
+      "spearman_rho": -0.02975,
+      "p_value": 0.34728
+    },
+    "Temperature_C__Humidity_%": {
+      "spearman_rho": -0.05004,
+      "p_value": 0.11375
+    },
+    "Temperature_C__Rainfall_mm": {
+      "spearman_rho": -0.00233,
+      "p_value": 0.94137
+    },
+    "Temperature_C__Soil_Moisture_%": {
+      "spearman_rho": 0.02104,
+      "p_value": 0.5064
+    },
+    "Temperature_C__Wind_Speed_kmph": {
+      "spearman_rho": -0.02486,
+      "p_value": 0.43232
+    },
+    "Temperature_C__Previous_Pest_Count": {
+      "spearman_rho": -0.05077,
+      "p_value": 0.10863
+    },
+    "Temperature_C__Days_Since_Last_Attack": {
+      "spearman_rho": 0.0034,
+      "p_value": 0.91436
+    },
+    "Humidity_%__Rainfall_mm": {
+      "spearman_rho": -0.04611,
+      "p_value": 0.14512
+    },
+    "Humidity_%__Soil_Moisture_%": {
+      "spearman_rho": 0.02504,
+      "p_value": 0.42891
+    },
+    "Humidity_%__Wind_Speed_kmph": {
+      "spearman_rho": 0.01661,
+      "p_value": 0.59974
+    },
+    "Humidity_%__Previous_Pest_Count": {
+      "spearman_rho": -0.02131,
+      "p_value": 0.50087
+    },
+    "Humidity_%__Days_Since_Last_Attack": {
+      "spearman_rho": 0.0088,
+      "p_value": 0.78105
+    },
+    "Rainfall_mm__Soil_Moisture_%": {
+      "spearman_rho": 0.03322,
+      "p_value": 0.29398
+    },
+    "Rainfall_mm__Wind_Speed_kmph": {
+      "spearman_rho": -0.00859,
+      "p_value": 0.78623
+    },
+    "Rainfall_mm__Previous_Pest_Count": {
+      "spearman_rho": 0.02247,
+      "p_value": 0.4779
+    },
+    "Rainfall_mm__Days_Since_Last_Attack": {
+      "spearman_rho": -0.01056,
+      "p_value": 0.73868
+    },
+    "Soil_Moisture_%__Wind_Speed_kmph": {
+      "spearman_rho": -0.02529,
+      "p_value": 0.42433
+    },
+    "Soil_Moisture_%__Previous_Pest_Count": {
+      "spearman_rho": 0.01258,
+      "p_value": 0.69107
+    },
+    "Soil_Moisture_%__Days_Since_Last_Attack": {
+      "spearman_rho": -0.0021,
+      "p_value": 0.94709
+    },
+    "Wind_Speed_kmph__Previous_Pest_Count": {
+      "spearman_rho": 0.04713,
+      "p_value": 0.1364
+    },
+    "Wind_Speed_kmph__Days_Since_Last_Attack": {
+      "spearman_rho": -0.05381,
+      "p_value": 0.08899
+    },
+    "Previous_Pest_Count__Days_Since_Last_Attack": {
+      "spearman_rho": 0.02511,
+      "p_value": 0.42774
+    }
+  },
+  "label_determinism_diagnostic": {
+    "exact_duplicate_feature_groups": 1000,
+    "conflicting_duplicate_feature_groups": 0,
+    "interpretation": "Labels are treated as probabilistic when feature groups or conditional distributions overlap; no label rule is imposed by this pipeline."
+  }
+}

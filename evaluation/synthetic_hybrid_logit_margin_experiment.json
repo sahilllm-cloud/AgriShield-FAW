@@ -1,0 +1,66 @@
+{
+  "experiment_note": "Separate experiment. Training feature is the logit transform of the existing synthetic leaf-probability column because the synthetic CSV has no per-row Swin images/logits; diagnostic inference uses actual Swin logit margins.",
+  "dataset": {
+    "rows": 50000,
+    "train_rows_after_forecast": 37200,
+    "test_rows_after_forecast": 9300,
+    "train_fields": 400,
+    "test_fields": 100
+  },
+  "params": {
+    "n_estimators": 350,
+    "learning_rate": 0.035,
+    "num_leaves": 63,
+    "max_depth": -1,
+    "subsample": 0.9,
+    "colsample_bytree": 0.9,
+    "reg_lambda": 1.0,
+    "random_state": 42,
+    "verbosity": -1,
+    "n_jobs": -1
+  },
+  "metrics": {
+    "mae": 0.12599386952237046,
+    "rmse": 0.1576929423136005,
+    "r2": 0.6441284510931626
+  },
+  "diagnostic_predictions": [
+    {
+      "image": "healthy A",
+      "filename": "20200610_063444.jpg",
+      "raw_infected_probability": 1.5408588296850212e-05,
+      "logit_margin": -11.080570220947266,
+      "old_raw_feature_probability": 0.10528478951084602,
+      "new_logit_margin_probability": 0.1238604568376444
+    },
+    {
+      "image": "healthy B",
+      "filename": "20200610_063514.jpg",
+      "raw_infected_probability": 8.184537136912695e-07,
+      "logit_margin": -14.015848159790039,
+      "old_raw_feature_probability": 0.10528478951084602,
+      "new_logit_margin_probability": 0.1238604568376444
+    },
+    {
+      "image": "infected A",
+      "filename": "20200612_103624.jpg",
+      "raw_infected_probability": 0.9998338222503662,
+      "logit_margin": 8.702156066894531,
+      "old_raw_feature_probability": 0.8106957483354161,
+      "new_logit_margin_probability": 0.8174034507003807
+    },
+    {
+      "image": "infected B",
+      "filename": "20200612_104321.jpg",
+      "raw_infected_probability": 0.9999719858169556,
+      "logit_margin": 10.483736038208008,
+      "old_raw_feature_probability": 0.8106957483354161,
+      "new_logit_margin_probability": 0.8174034507003807
+    }
+  ],
+  "baseline_metrics": {
+    "mae": 0.1259910696109146,
+    "rmse": 0.15773803148437962,
+    "r2": 0.6439249131691476
+  }
+}

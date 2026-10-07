@@ -1,436 +1,383 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import L from "leaflet";
+import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIconRetina from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/leaflet.css";
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIconRetina,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
+const locationPinIcon = L.icon({
+  iconRetinaUrl: markerIconRetina,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+const HYBRID_API_URL = "http://127.0.0.1:8000/api/predict/hybrid";
+const DEFAULT_MAP_CENTER = [12.972, 77.594];
+
+const WEATHER_LABELS = {
+  Temperature_C: ["Temperature", "°C"],
+  Humidity_pct: ["Humidity", "%"],
+  Rainfall_mm: ["Rainfall", "mm"],
+  Soil_Moisture_pct: ["Soil Moisture", "%"],
+  Wind_Speed_kmph: ["Wind Speed", "km/h"],
+  forecast_Temperature_C_mean_7d: ["Temperature", "°C"],
+  forecast_Humidity_pct_mean_7d: ["Humidity", "%"],
+  forecast_Rainfall_mm_mean_7d: ["Rainfall", "mm"],
+  forecast_Soil_Moisture_pct_mean_7d: ["Soil Moisture", "%"],
+  forecast_Wind_Speed_kmph_mean_7d: ["Wind Speed", "km/h"],
+};
+
+function WeatherPanel({ title, values }) {
+  return (
+    <div className="hybrid-detail-panel" style={{ padding: "24px" }}>
+      <span className="console-label" style={{ display: "block", marginBottom: "16px" }}>{title}</span>
+      <div className="hybrid-weather-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "12px" }}>
+        {Object.entries(values || {}).map(([key, value]) => (
+          <div
+            className="hybrid-weather-value"
+            key={key}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "14px 16px", borderRadius: "10px", background: "rgba(233, 247, 237, 0.72)" }}
+          >
+            <span style={{ fontSize: "0.85rem", lineHeight: 1.35, color: "var(--muted)", textTransform: "none" }}>
+              {WEATHER_LABELS[key]?.[0] || key.replaceAll("_", " ")}
+            </span>
+            <strong style={{ flexShrink: 0, fontSize: "1rem", lineHeight: 1.35, color: "var(--text)", whiteSpace: "nowrap" }}>
+              {typeof value === "number" ? value.toFixed(1) : value}
+              {WEATHER_LABELS[key]?.[1] && <small style={{ fontSize: "0.78rem", fontWeight: 600 }}> {WEATHER_LABELS[key][1]}</small>}
+            </strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LocationMarker({ position, onSelect }) {
+  useMapEvents({
+    click(event) {
+      onSelect(String(event.latlng.lat), String(event.latlng.lng));
+    },
+  });
+
+  return position ? <Marker position={position} icon={locationPinIcon} /> : null;
+}
+
+function MapCenter({ latitude, longitude }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      map.setView([Number(latitude), Number(longitude)], map.getZoom(), { animate: true });
+    }
+  }, [latitude, longitude, map]);
+
+  return null;
+}
 
 function Prediction() {
-  const [month, setMonth] = useState("6");
-  const [temperature, setTemperature] = useState("");
-  const [humidity, setHumidity] = useState("");
-  const [rainfall, setRainfall] = useState("");
-  const [soilMoisture, setSoilMoisture] = useState("");
-  const [windSpeed, setWindSpeed] = useState("");
-  const [cropStage, setCropStage] = useState("vegetative");
-  const [previousPestCount, setPreviousPestCount] = useState("2");
-  const [daysSinceLastAttack, setDaysSinceLastAttack] = useState("7");
-
+  const [image, setImage] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [sowingDate, setSowingDate] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [locationSearch, setLocationSearch] = useState("");
+  const [selectedLocationName, setSelectedLocationName] = useState("");
   const [prediction, setPrediction] = useState(null);
+  const [validationError, setValidationError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSearchingLocation, setIsSearchingLocation] = useState(false);
 
-  const handleUseLiveWeather = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/weather/live");
-
-      if (!response.ok) {
-        throw new Error("Live weather request failed");
-      }
-
-      const data = await response.json();
-      const liveSoilMoisture = Number(data.soil_moisture ?? data.soil_moisture_0_1cm ?? 0);
-      const soilMoisturePercent = Number.isFinite(liveSoilMoisture)
-        ? Number((liveSoilMoisture * 100).toFixed(1))
-        : "";
-
-      setMonth(String(new Date().getMonth() + 1));
-      setTemperature(String(data.temperature ?? ""));
-      setHumidity(String(data.humidity ?? ""));
-      setRainfall(String(data.rainfall ?? ""));
-      setSoilMoisture(String(soilMoisturePercent));
-      setWindSpeed(String(data.wind_speed ?? ""));
-    } catch (error) {
-      console.error("Live weather error:", error);
+  useEffect(() => {
+    if (!image) {
+      setImagePreviewUrl("");
+      return undefined;
     }
-  };
 
-  const handlePrediction = async () => {
-    const payload = {
-      Month: Number(month),
-      Temperature_C: Number(temperature),
-      "Humidity_%": Number(humidity),
-      Rainfall_mm: Number(rainfall),
-      "Soil_Moisture_%": Number(soilMoisture),
-      Wind_Speed_kmph: Number(windSpeed),
-      Crop_Stage: cropStage,
-      Previous_Pest_Count: Number(previousPestCount),
-      Days_Since_Last_Attack: Number(daysSinceLastAttack),
-    };
+    const previewUrl = URL.createObjectURL(image);
+    setImagePreviewUrl(previewUrl);
+
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [image]);
+
+  const handlePrediction = async (event) => {
+    event.preventDefault();
+
+    if (!image) {
+      setValidationError("Upload a maize leaf image.");
+      return;
+    }
+    if (!sowingDate) {
+      setValidationError("Select a sowing date.");
+      return;
+    }
+    if (!latitude || !longitude || !Number.isFinite(Number(latitude)) || !Number.isFinite(Number(longitude))) {
+      setValidationError("Latitude and longitude must be valid numbers.");
+      return;
+    }
+
+    setValidationError("");
+    setPrediction(null);
+    setIsSubmitting(true);
+
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("sowing_date", sowingDate);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/predict/weather", {
+      const response = await fetch(HYBRID_API_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: formData,
       });
-
-      if (!response.ok) {
-        throw new Error("Risk prediction request failed");
-      }
-
       const data = await response.json();
 
-      localStorage.setItem("Month", String(payload.Month));
-      localStorage.setItem("Temperature_C", String(payload.Temperature_C));
-      localStorage.setItem("Humidity_%", String(payload["Humidity_%"]));
-      localStorage.setItem("Rainfall_mm", String(payload.Rainfall_mm));
-      localStorage.setItem("Soil_Moisture_%", String(payload["Soil_Moisture_%"]));
-      localStorage.setItem("Wind_Speed_kmph", String(payload.Wind_Speed_kmph));
-      localStorage.setItem("Crop_Stage", String(payload.Crop_Stage));
-      localStorage.setItem("Previous_Pest_Count", String(payload.Previous_Pest_Count));
-      localStorage.setItem("Days_Since_Last_Attack", String(payload.Days_Since_Last_Attack));
-      localStorage.setItem("risk_level", String(data.risk_level));
-      localStorage.setItem("confidence", String(data.confidence));
+      if (!response.ok) {
+        throw new Error(data.detail || "Hybrid prediction request failed.");
+      }
 
-      setPrediction({
-        lightgbm: data.risk_level,
-        finalRisk: data.risk_level,
-        confidence: `${(data.confidence * 100).toFixed(1)}%`,
-        probabilities: data.probabilities || {},
-      });
+      setPrediction(data);
     } catch (error) {
-      console.error("Prediction error:", error);
-      setPrediction({
-        lightgbm: "Error",
-        finalRisk: "Error",
-        confidence: "N/A",
-        probabilities: {},
-      });
+      console.error("Hybrid prediction error:", error);
+      setValidationError(error.message || "Hybrid prediction failed.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const probabilityRows = prediction
-    ? [
-        { label: "High", value: Number(prediction.probabilities?.High ?? 0) },
-        { label: "Medium", value: Number(prediction.probabilities?.Medium ?? 0) },
-        { label: "Low", value: Number(prediction.probabilities?.Low ?? 0) },
-      ]
-    : [];
+  const selectedPosition = latitude && longitude
+    ? [Number(latitude), Number(longitude)]
+    : null;
+
+  const handleMapLocation = (selectedLatitude, selectedLongitude) => {
+    setLatitude(selectedLatitude);
+    setLongitude(selectedLongitude);
+    setSelectedLocationName(`${selectedLatitude}, ${selectedLongitude}`);
+    setValidationError("");
+  };
+
+  const handleLocationSearch = async (event) => {
+    event.preventDefault();
+    const query = locationSearch.trim();
+    if (!query) {
+      setValidationError("Enter a location to search.");
+      return;
+    }
+
+    setValidationError("");
+    setIsSearchingLocation(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(query)}`,
+      );
+      if (!response.ok) {
+        throw new Error("Location search failed.");
+      }
+
+      const results = await response.json();
+      if (!results.length) {
+        throw new Error("Location not found.");
+      }
+
+      const result = results[0];
+      handleMapLocation(result.lat, result.lon);
+      setSelectedLocationName(result.display_name || query);
+    } catch (error) {
+      setValidationError(error.message || "Location search failed.");
+    } finally {
+      setIsSearchingLocation(false);
+    }
+  };
+
+  const handleUseLiveLocation = () => {
+    if (!navigator.geolocation) {
+      setValidationError("Live location is not supported by this browser.");
+      return;
+    }
+
+    setValidationError("");
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => handleMapLocation(coords.latitude.toFixed(6), coords.longitude.toFixed(6)),
+      () => setValidationError("Could not access your live location."),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
+    );
+  };
 
   return (
     <div className="prediction-page">
-
-      {/* =====================================================
-          PAGE HEADER
-          ===================================================== */}
-
       <section className="prediction-header">
-
-        <span className="prediction-tag">
-          AI RISK ENGINE
-        </span>
-
+        <span className="prediction-tag">AI RISK ENGINE</span>
         <h1>
           FAW Outbreak
           <br />
           Prediction
         </h1>
-
         <p>
-          Analyze environmental conditions and estimate
-          Fall Armyworm outbreak risk using time-series
-          and machine-learning models.
+          Combine a maize leaf scan with location weather history to estimate
+          Fall Armyworm attack probability.
         </p>
-
       </section>
-
-
-      {/* =====================================================
-          ENVIRONMENTAL INPUT PANEL
-          ===================================================== */}
 
       <section className="prediction-console">
-
         <div className="prediction-console-header">
-
           <div>
-            <span className="console-label">
-              ENVIRONMENTAL SIGNALS
-            </span>
-
-            <h2>
-              Current Field Conditions
-            </h2>
+            <span className="console-label">HYBRID SIGNALS</span>
+            <h2>Field Risk Assessment</h2>
           </div>
-
           <div className="prediction-status">
-            <span></span>
+            <span />
             MODELS READY
           </div>
-
         </div>
 
-
-        {/* =================================================
-            INPUTS
-            ================================================= */}
-
-        <div className="environment-grid">
-
-          <div className="environment-input">
-            <div className="input-icon">📅</div>
-            <label>
-              Month
-              <span>#</span>
-            </label>
+        <form className="hybrid-form" onSubmit={handlePrediction}>
+          <label className="hybrid-upload-field">
+            <span className="input-icon">📷</span>
+            <span className="hybrid-field-label">Maize leaf image</span>
             <input
-              type="number"
-              min="1"
-              max="12"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              placeholder="6"
+              type="file"
+              accept="image/*"
+              onChange={(event) => setImage(event.target.files?.[0] || null)}
             />
-            <small>Month of the season</small>
-          </div>
+            {image ? (
+              <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                {imagePreviewUrl && (
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Selected maize leaf preview"
+                    style={{ width: "48px", height: "48px", objectFit: "cover", borderRadius: "8px" }}
+                  />
+                )}
+                <small>{image.name}</small>
+              </span>
+            ) : (
+              <small>PNG, JPG, or WEBP</small>
+            )}
+          </label>
 
-          <div className="environment-input">
-            <div className="input-icon">🌡️</div>
-            <label>
-              Temperature
-              <span>°C</span>
-            </label>
-            <input
-              type="number"
-              value={temperature}
-              onChange={(e) => setTemperature(e.target.value)}
-              placeholder="28"
-            />
-            <small>Atmospheric temperature</small>
-          </div>
-
-          <div className="environment-input">
-            <div className="input-icon">💧</div>
-            <label>
-              Humidity
-              <span>%</span>
-            </label>
-            <input
-              type="number"
-              value={humidity}
-              onChange={(e) => setHumidity(e.target.value)}
-              placeholder="75"
-            />
-            <small>Relative humidity</small>
-          </div>
-
-          <div className="environment-input">
-            <div className="input-icon">🌧️</div>
-            <label>
-              Rainfall
-              <span>mm</span>
-            </label>
-            <input
-              type="number"
-              value={rainfall}
-              onChange={(e) => setRainfall(e.target.value)}
-              placeholder="10"
-            />
-            <small>Recent precipitation</small>
-          </div>
-
-          <div className="environment-input">
-            <div className="input-icon">🟫</div>
-            <label>
-              Soil Moisture
-              <span>%</span>
-            </label>
-            <input
-              type="number"
-              value={soilMoisture}
-              onChange={(e) => setSoilMoisture(e.target.value)}
-              placeholder="55"
-            />
-            <small>Field moisture level</small>
-          </div>
-
-          <div className="environment-input">
-            <div className="input-icon">💨</div>
-            <label>
-              Wind Speed
-              <span>km/h</span>
-            </label>
-            <input
-              type="number"
-              value={windSpeed}
-              onChange={(e) => setWindSpeed(e.target.value)}
-              placeholder="8"
-            />
-            <small>Current wind conditions</small>
-          </div>
-
-          <div className="environment-input live-weather-wrapper" style={{ gridColumn: "1 / -1" }}>
-            <button type="button" className="live-weather-button" onClick={handleUseLiveWeather}>
-              <span className="live-weather-icon">☁️</span>
-              Use Live Weather
-            </button>
-          </div>
-
-          <div className="environment-input">
-            <div className="input-icon">🌱</div>
-            <label>
-              Crop Stage
-            </label>
-            <select
-              className="environment-select"
-              value={cropStage}
-              onChange={(e) => setCropStage(e.target.value)}
+          <div className="hybrid-input-field" style={{ gridColumn: "span 2" }}>
+            <span className="input-icon">📍</span>
+            <span className="hybrid-field-label">Field location</span>
+            <MapContainer
+              center={DEFAULT_MAP_CENTER}
+              zoom={5}
+              scrollWheelZoom
+              style={{ width: "100%", height: "240px", borderRadius: "10px", marginTop: "8px" }}
             >
-              <option value="seedling">Seedling</option>
-              <option value="vegetative">Vegetative</option>
-              <option value="reproductive">Reproductive</option>
-              <option value="maturity">Maturity</option>
-            </select>
-            <small>Crop growth stage</small>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <MapCenter latitude={latitude} longitude={longitude} />
+              <LocationMarker position={selectedPosition} onSelect={handleMapLocation} />
+            </MapContainer>
+            <button
+              className="predict-button"
+              type="button"
+              onClick={handleUseLiveLocation}
+              style={{ marginTop: "10px", alignSelf: "flex-start" }}
+            >
+              Use My Live Location
+            </button>
+            <small>
+              {selectedPosition
+                ? `Selected: ${latitude}, ${longitude}`
+                : "Click the map or use your live location"}
+            </small>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "12px" }}>
+              <input
+                type="text"
+                value={locationSearch}
+                onChange={(event) => setLocationSearch(event.target.value)}
+                placeholder="Enter location (e.g. Bengaluru, Karnataka)"
+                style={{ flex: 1, minWidth: 0 }}
+              />
+              <button
+                className="predict-button"
+                type="button"
+                onClick={handleLocationSearch}
+                disabled={isSearchingLocation}
+              >
+                {isSearchingLocation ? "Searching..." : "Search Location"}
+              </button>
+            </div>
+            {selectedLocationName && (
+              <small>Selected Location: {selectedLocationName}</small>
+            )}
           </div>
 
-          <div className="environment-input">
-            <div className="input-icon">🐛</div>
-            <label>
-              Previous Pest Count
-            </label>
+          <label className="hybrid-input-field">
+            <span className="input-icon">📅</span>
+            <span className="hybrid-field-label">Sowing date</span>
             <input
-              type="number"
-              value={previousPestCount}
-              onChange={(e) => setPreviousPestCount(e.target.value)}
-              placeholder="2"
+              type="date"
+              value={sowingDate}
+              onChange={(event) => setSowingDate(event.target.value)}
+              required
             />
-            <small>Recent pest observations</small>
+            <small>DAS is calculated automatically</small>
+          </label>
+
+          <div className="prediction-action hybrid-submit-row">
+            <button className="predict-button" type="submit" disabled={isSubmitting}>
+              <span>✦</span>
+              {isSubmitting ? "Analyzing..." : "Analyze FAW Risk"}
+            </button>
+            <p>Hybrid LSTM + LightGBM analysis</p>
+            {validationError && <p role="alert">{validationError}</p>}
           </div>
-
-          <div className="environment-input">
-            <div className="input-icon">⏱️</div>
-            <label>
-              Days Since Last Attack
-            </label>
-            <input
-              type="number"
-              value={daysSinceLastAttack}
-              onChange={(e) => setDaysSinceLastAttack(e.target.value)}
-              placeholder="7"
-            />
-            <small>Time since prior attack</small>
-          </div>
-
-        </div>
-
-
-        {/* =================================================
-            PREDICT BUTTON
-            ================================================= */}
-
-        <div className="prediction-action">
-
-          <button
-            className="predict-button"
-            onClick={handlePrediction}
-          >
-            <span>✦</span>
-            Analyze FAW Risk
-          </button>
-
-          <p>
-            LightGBM environmental analysis
-          </p>
-
-        </div>
-
-
-        {/* =================================================
-            PREDICTION RESULT
-            ================================================= */}
+        </form>
 
         {prediction && (
-
-          <div className="prediction-result">
-
+          <div className="prediction-result hybrid-result">
             <div className="prediction-result-header">
-
               <div>
-                <span>
-                  ANALYSIS COMPLETE
-                </span>
-
-                <h2>
-                  FAW Risk Assessment
-                </h2>
+                <span>ANALYSIS COMPLETE</span>
+                <h2>FAW Risk Assessment</h2>
               </div>
-
-              <div className="result-status">
-                ●
-              </div>
-
+              <div className="result-status">●</div>
             </div>
 
-
-            {/* Model outputs */}
-
-            <div className="model-results">
-
-              <div className="model-result-card">
-
-                <div className="model-result-icon">
-                  G
-                </div>
-
-                <div>
-                  <span>
-                    RISK CLASSIFIER
-                  </span>
-
-                  <h3>
-                    LightGBM
-                  </h3>
-                </div>
-
-                <strong>
-                  {prediction.lightgbm}
-                </strong>
-
+            <div className="hybrid-risk-summary" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "20px", padding: "22px 24px", borderRadius: "12px", background: "var(--green-soft)" }}>
+                <span style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.08em", color: "var(--muted)" }}>FAW ATTACK PROBABILITY</span>
+                <strong style={{ fontSize: "clamp(1.8rem, 4vw, 2.7rem)", lineHeight: 1, color: "var(--green-800)", whiteSpace: "nowrap" }}>{Number(prediction.faw_attack_probability).toFixed(1)}%</strong>
               </div>
-
-            </div>
-
-
-            {/* Final result */}
-
-            <div className="prediction-final">
-
-              <span>
-                FINAL AGRISHIELD ASSESSMENT
-              </span>
-
-              <h2>
-                {prediction.finalRisk} Risk
-              </h2>
-
-              <p>
-                Confidence: {prediction.confidence}
-              </p>
-
-            </div>
-
-            <div className="prediction-probabilities">
-              <div className="probability-header">
-                <span>PROBABILITY BREAKDOWN</span>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "20px", padding: "22px 24px", borderRadius: "12px", background: "#fff7df" }}>
+                <span style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.08em", color: "var(--muted)" }}>RISK LEVEL</span>
+                <strong style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", lineHeight: 1, color: "var(--green-800)", whiteSpace: "nowrap" }}>{String(prediction.risk_level).toUpperCase()}</strong>
               </div>
-
-              {probabilityRows.map(({ label, value }) => (
-                <div className="probability-row" key={label}>
-                  <div className="probability-label-row">
-                    <span>{label}</span>
-                    <strong>{(value * 100).toFixed(1)}%</strong>
-                  </div>
-
-                  <div className="probability-bar">
-                    <span style={{ width: `${Math.max(value * 100, 2)}%` }} />
-                  </div>
-                </div>
-              ))}
             </div>
 
+            <div className="hybrid-meta-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "16px", marginTop: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "16px 20px", border: "1px solid var(--border)", borderRadius: "10px", background: "#fff" }}>
+                <span style={{ fontSize: "0.82rem", fontWeight: 700, letterSpacing: "0.06em", color: "var(--muted)" }}>Days After Sowing (DAS)</span>
+                <strong style={{ fontSize: "1.1rem", color: "var(--text)", whiteSpace: "nowrap" }}>{prediction.das} days</strong>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "16px 20px", border: "1px solid var(--border)", borderRadius: "10px", background: "#fff" }}>
+                <span style={{ fontSize: "0.82rem", fontWeight: 700, letterSpacing: "0.06em", color: "var(--muted)" }}>CROP STAGE</span>
+                <strong style={{ fontSize: "1.1rem", color: "var(--text)", whiteSpace: "nowrap" }}>{prediction.crop_stage}</strong>
+              </div>
+            </div>
+
+                <div className="hybrid-detail-grid">
+              <WeatherPanel title="CURRENT WEATHER" values={prediction.current_weather} />
+              <WeatherPanel title="7-DAY FORECAST AVERAGE" values={prediction.forecast_7_day} />
+            </div>
           </div>
-
         )}
-
       </section>
-
     </div>
   );
 }

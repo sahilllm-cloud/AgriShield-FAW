@@ -64,25 +64,46 @@ function Dashboard() {
   };
 
   const fetchRisk = async () => {
-    const response = await fetch("http://127.0.0.1:8000/api/predict/weather", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        Month: 6,
-        Temperature_C: 28,
-        "Humidity_%": 75,
-        Rainfall_mm: 10,
-        "Soil_Moisture_%": 55,
-        Wind_Speed_kmph: 8,
-        Crop_Stage: "vegetative",
-        Previous_Pest_Count: 2,
-        Days_Since_Last_Attack: 7,
-      }),
-    });
-    const data = await response.json();
-    setRisk(data.risk_level);
+    const payload = {
+      Month: 6,
+      Temperature_C: 28,
+      "Humidity_%": 75,
+      Rainfall_mm: 10,
+      "Soil_Moisture_%": 55,
+      Wind_Speed_kmph: 8,
+      Crop_Stage: "Vegetative",
+      Previous_Pest_Count: 2,
+      Days_Since_Last_Attack: 7,
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/predict/weather", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseBody = await response.text();
+      if (!response.ok) {
+        let validationResponse = responseBody;
+        try {
+          validationResponse = JSON.parse(responseBody);
+        } catch {
+          // Keep the raw response when the backend did not return JSON.
+        }
+        console.error("Weather risk validation response:", validationResponse);
+        return;
+      }
+
+      const data = JSON.parse(responseBody);
+      if (typeof data.risk_level === "string" && data.risk_level.trim()) {
+        setRisk(data.risk_level);
+      }
+    } catch (error) {
+      console.error("Weather risk request failed:", error);
+    }
   };
 
   useEffect(() => {

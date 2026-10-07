@@ -67,7 +67,7 @@
 - Trained image classification model
 - Saved best model (`models/swin_best.pth`)
 - Developed evaluation script
-- Achieved **99.21% test accuracy**
+- Achieved **99.21% test accuracy** *(legacy individual-model metric; not hybrid or real-world FAW accuracy)*
 
 #### Weather Dataset
 - Selected Fall Armyworm Weather Dataset
@@ -83,7 +83,7 @@
 - Trained weather prediction model
 - Evaluated model
 - Saved trained model (`models/lstm_best.pth`)
-- Achieved **64.00% test accuracy**
+- Achieved **64.00% test accuracy** *(legacy individual-model metric; not hybrid or real-world FAW accuracy)*
 
 #### LightGBM Model
 - Implemented LightGBM classifier
@@ -91,7 +91,7 @@
 - Evaluated model
 - Generated feature importance analysis
 - Saved trained model (`models/lightgbm_model.pkl`)
-- Achieved **82.00% test accuracy**
+- Achieved **82.00% test accuracy** *(legacy individual-model metric; not hybrid or real-world FAW accuracy)*
 
 ---
 
@@ -183,9 +183,9 @@ Hybrid AI system development.
 
 ### Completed Models
 
-- ✅ Swin Transformer (99.21% Accuracy)
-- ✅ LSTM (64.00% Accuracy)
-- ✅ LightGBM (82.00% Accuracy)
+- ✅ Swin Transformer (99.21% legacy individual-model metric)
+- ✅ LSTM (64.00% legacy individual-model metric)
+- ✅ LightGBM (82.00% legacy individual-model metric)
 
 ### Remaining Modules
 

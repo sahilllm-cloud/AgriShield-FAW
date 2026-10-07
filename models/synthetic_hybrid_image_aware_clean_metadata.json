@@ -1,0 +1,11 @@
+{
+  "model": "Image-aware clean hybrid LightGBM",
+  "image_probability_source": "Swin train + validation only",
+  "test_image_probabilities_used_for_training": false,
+  "image_weight": 0.45,
+  "synthetic_target_note": "Image contribution is a synthetic-data design parameter and is not a biological or literature-derived weight.",
+  "lstm_source": "models/synthetic_hybrid_lstm.pth",
+  "MAE": 0.0858927820126789,
+  "RMSE": 0.10584921559699201,
+  "R2": 0.8439568228494989
+}

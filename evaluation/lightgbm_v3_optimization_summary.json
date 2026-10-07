@@ -1,0 +1,123 @@
+{
+  "best_configuration": {
+    "n_estimators": 800,
+    "learning_rate": 0.03,
+    "num_leaves": 127,
+    "max_depth": 5,
+    "min_child_samples": 80,
+    "subsample": 1.0,
+    "colsample_bytree": 0.7,
+    "reg_alpha": 0,
+    "reg_lambda": 1.0
+  },
+  "best_metrics": {
+    "accuracy": 0.8399426660296225,
+    "macro_f1": 0.8358549213858248,
+    "weighted_f1": 0.839604933099751,
+    "high_precision": 0.9824561403508771,
+    "high_recall": 0.7021943573667712,
+    "high_f1": 0.8190127970749543
+  },
+  "benchmark": {
+    "accuracy": 0.84,
+    "high_f1": 0.81
+  },
+  "improved": true,
+  "model_saved": "models\\faw_risk_model_best.pkl",
+  "ablations": {
+    "raw": {
+      "accuracy": 0.8332537028189202,
+      "macro_f1": 0.821084563717548,
+      "weighted_f1": 0.8322458289872364,
+      "high_precision": 0.9459459459459459,
+      "high_recall": 0.658307210031348,
+      "high_f1": 0.7763401109057301
+    },
+    "weather": {
+      "accuracy": 0.8322981366459627,
+      "macro_f1": 0.8247922938966653,
+      "weighted_f1": 0.8316149611208732,
+      "high_precision": 0.9401709401709402,
+      "high_recall": 0.6896551724137931,
+      "high_f1": 0.7956600361663653
+    },
+    "pest": {
+      "accuracy": 0.822742474916388,
+      "macro_f1": 0.8103774466045855,
+      "weighted_f1": 0.8215153434900853,
+      "high_precision": 0.9620853080568721,
+      "high_recall": 0.6363636363636364,
+      "high_f1": 0.7660377358490567
+    },
+    "all": {
+      "accuracy": 0.8256091734352604,
+      "macro_f1": 0.8233017494731033,
+      "weighted_f1": 0.8254676965309135,
+      "high_precision": 0.9346938775510204,
+      "high_recall": 0.7178683385579937,
+      "high_f1": 0.8120567375886525
+    }
+  },
+  "top_15_features": [
+    {
+      "feature": "Temperature_C",
+      "importance": 5078
+    },
+    {
+      "feature": "Humidity_%",
+      "importance": 3622
+    },
+    {
+      "feature": "Soil_Moisture_%",
+      "importance": 3268
+    },
+    {
+      "feature": "Days_Since_Last_Attack",
+      "importance": 3049
+    },
+    {
+      "feature": "Rainfall_mm",
+      "importance": 3034
+    },
+    {
+      "feature": "Wind_Speed_kmph",
+      "importance": 2780
+    },
+    {
+      "feature": "Pest_Count_per_Days_Since_Attack",
+      "importance": 2763
+    },
+    {
+      "feature": "Rainfall_per_Soil_Moisture",
+      "importance": 2701
+    },
+    {
+      "feature": "Month",
+      "importance": 2592
+    },
+    {
+      "feature": "Pest_Count_x_Humidity",
+      "importance": 2578
+    },
+    {
+      "feature": "Temperature_x_Rainfall",
+      "importance": 2492
+    },
+    {
+      "feature": "Temperature_x_Humidity",
+      "importance": 2480
+    },
+    {
+      "feature": "Humidity_x_Rainfall",
+      "importance": 2460
+    },
+    {
+      "feature": "Humidity_x_Pest_per_Temperature",
+      "importance": 2221
+    },
+    {
+      "feature": "Previous_Pest_Count",
+      "importance": 2027
+    }
+  ]
+}

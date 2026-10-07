@@ -1,0 +1,56 @@
+{
+  "source_row_count": 1000,
+  "generated_row_count": 10000,
+  "class_distribution": {
+    "High": 1370,
+    "Low": 4100,
+    "Medium": 4530
+  },
+  "feature_ranges": {
+    "Month": {
+      "min": 1,
+      "max": 12
+    },
+    "Temperature_C": {
+      "min": 18.0,
+      "max": 38.0
+    },
+    "Humidity_%": {
+      "min": 40.0,
+      "max": 94.97962876610397
+    },
+    "Rainfall_mm": {
+      "min": 0.5105809570701915,
+      "max": 348.88368945115553
+    },
+    "Soil_Moisture_%": {
+      "min": 15.005903354533837,
+      "max": 59.99174444571856
+    },
+    "Wind_Speed_kmph": {
+      "min": 0.0,
+      "max": 19.99360122836241
+    },
+    "Previous_Pest_Count": {
+      "min": 0,
+      "max": 100
+    },
+    "Days_Since_Last_Attack": {
+      "min": 0,
+      "max": 60
+    }
+  },
+  "random_seed": 42,
+  "generation_method": "Risk-conditional Gaussian copula over numeric ranks, conditional Crop_Stage sampling, bounded inverse empirical quantiles, and source-row traceability.",
+  "source_id_count": 1000,
+  "source_id_reuse": {
+    "count": 1000,
+    "mean": 10,
+    "std": 3,
+    "min": 2,
+    "25%": 8,
+    "50%": 10,
+    "75%": 12,
+    "max": 25
+  }
+}

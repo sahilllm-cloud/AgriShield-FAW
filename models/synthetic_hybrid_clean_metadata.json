@@ -1,0 +1,9 @@
+{
+  "model": "LightGBM clean hybrid experiment",
+  "image_probability_source": "Swin train + validation only",
+  "test_image_probabilities_used_for_training": false,
+  "lstm_source": "existing synthetic_hybrid_lstm.pth",
+  "MAE": 0.1549624255643634,
+  "RMSE": 0.19067129365300972,
+  "R2": 0.4797173042434084
+}

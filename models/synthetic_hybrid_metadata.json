@@ -1,0 +1,63 @@
+{
+  "config": {
+    "seed": 42,
+    "field_count": 500,
+    "days_per_field": 100,
+    "input_window": 7,
+    "forecast_horizon": 7,
+    "lstm_hidden_size": 48,
+    "lstm_layers": 2,
+    "lstm_epochs": 5,
+    "lstm_batch_size": 256,
+    "lstm_learning_rate": 0.001,
+    "test_size": 0.2
+  },
+  "dataset_path": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\data\\synthetic_hybrid\\synthetic_maize_faw_50000.csv",
+  "row_count": 50000,
+  "field_count": 500,
+  "train_fields": 400,
+  "test_fields": 100,
+  "weather_features": [
+    "Temperature_C",
+    "Humidity_pct",
+    "Rainfall_mm",
+    "Soil_Moisture_pct",
+    "Wind_Speed_kmph"
+  ],
+  "fusion_features": [
+    "Temperature_C",
+    "Humidity_pct",
+    "Rainfall_mm",
+    "Soil_Moisture_pct",
+    "Wind_Speed_kmph",
+    "DAS",
+    "FAW_leaf_damage_probability",
+    "forecast_Temperature_C_mean_7d",
+    "forecast_Humidity_pct_mean_7d",
+    "forecast_Rainfall_mm_mean_7d",
+    "forecast_Soil_Moisture_pct_mean_7d",
+    "forecast_Wind_Speed_kmph_mean_7d",
+    "Crop_Stage_Seedling",
+    "Crop_Stage_Vegetative",
+    "Crop_Stage_Whorl",
+    "Crop_Stage_Tasseling",
+    "Crop_Stage_Silking",
+    "Crop_Stage_Maturity"
+  ],
+  "forecast_source": "LSTM predictions only; actual future weather is excluded from fusion features",
+  "artifacts": {
+    "lstm": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\models\\synthetic_hybrid_lstm.pth",
+    "scaler": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\models\\synthetic_hybrid_weather_scaler.pkl",
+    "fusion": "C:\\Users\\Sahil\\Desktop\\Projects\\AgriShield-FAW\\models\\synthetic_hybrid_lightgbm.pkl"
+  },
+  "lightgbm_params": {
+    "n_estimators": 350,
+    "learning_rate": 0.035,
+    "num_leaves": 63,
+    "max_depth": -1,
+    "subsample": 0.9,
+    "colsample_bytree": 0.9,
+    "reg_lambda": 1.0,
+    "random_state": 42
+  }
+}
