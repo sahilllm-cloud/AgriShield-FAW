@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import io
+import json
 from pathlib import Path
 from typing import Any
+from datetime import date as date_type, timedelta
+from urllib import error, request
 
 import joblib
 import numpy as np
@@ -13,7 +16,9 @@ from PIL import Image, UnidentifiedImageError
 from fastapi import HTTPException, UploadFile
 from torchvision import transforms
 
-from app.weather_forecast import generate_lstm_forecast
+from training.synthetic_hybrid_predictor import (
+    SyntheticHybridPredictor,
+)
 
 
 # ============================================================
@@ -33,6 +38,7 @@ HYBRID_MODEL_PATH = MODELS_DIR / "hybrid_faw_model.pkl"
 
 _swin_model = None
 _hybrid_artifact = None
+_synthetic_predictor = None
 
 
 # ============================================================
@@ -95,6 +101,109 @@ def load_hybrid_model():
         )
 
     return _hybrid_artifact
+
+
+def load_synthetic_predictor():
+
+    global _synthetic_predictor
+
+    if _synthetic_predictor is None:
+        _synthetic_predictor = SyntheticHybridPredictor()
+
+    return _synthetic_predictor
+
+
+def fetch_weather_history(
+    selected_date: str,
+    latitude: float,
+    longitude: float,
+) -> list[dict[str, float]]:
+
+    try:
+        end_date = date_type.fromisoformat(selected_date)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid date. Use YYYY-MM-DD.",
+        ) from exc
+
+    start_date = end_date - timedelta(days=6)
+    today = date_type.today()
+
+    if end_date >= today and (end_date - today).days <= 16:
+        base_url = "https://api.open-meteo.com/v1/forecast"
+    elif end_date < today:
+        base_url = "https://archive-api.open-meteo.com/v1/archive"
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "The selected future date is outside "
+                "Open-Meteo's forecast range."
+            ),
+        )
+
+    url = (
+        f"{base_url}?latitude={latitude}&longitude={longitude}"
+        f"&start_date={start_date.isoformat()}"
+        f"&end_date={end_date.isoformat()}"
+        "&hourly=temperature_2m,relative_humidity_2m,"
+        "precipitation,wind_speed_10m,soil_moisture_0_to_1cm"
+        "&timezone=auto"
+    )
+
+    try:
+        with request.urlopen(url, timeout=15) as response:
+            payload = json.loads(
+                response.read().decode("utf-8")
+            )
+    except error.HTTPError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Open-Meteo rejected the weather request ({exc.code}).",
+        ) from exc
+    except error.URLError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Failed to fetch weather from Open-Meteo.",
+        ) from exc
+
+    hourly = payload.get("hourly")
+    if not hourly or not hourly.get("time"):
+        raise HTTPException(
+            status_code=502,
+            detail="Open-Meteo did not return hourly weather data.",
+        )
+
+    rows = []
+    for day_index in range(7):
+        values = {}
+        start = day_index * 24
+        end = start + 24
+
+        for source, target in (
+            ("temperature_2m", "Temperature_C"),
+            ("relative_humidity_2m", "Humidity_pct"),
+            ("wind_speed_10m", "Wind_Speed_kmph"),
+            ("soil_moisture_0_to_1cm", "Soil_Moisture_pct"),
+        ):
+            samples = [
+                value
+                for value in hourly.get(source, [])[start:end]
+                if value is not None
+            ]
+            values[target] = float(np.mean(samples)) if samples else 0.0
+
+        rainfall = [
+            value
+            for value in hourly.get("precipitation", [])[start:end]
+            if value is not None
+        ]
+        values["Rainfall_mm"] = float(np.sum(rainfall)) if rainfall else 0.0
+        values["Soil_Moisture_pct"] *= 100.0
+        rows.append(values)
+
+    return rows
 
 
 # ============================================================
@@ -306,134 +415,65 @@ async def predict_hybrid(
     )
 
     # --------------------------------------------------------
-    # WEATHER + LSTM
+    # WEATHER + SYNTHETIC PYTORCH LSTM + LIGHTGBM
     # --------------------------------------------------------
 
-    weather_result = generate_lstm_forecast(
-        date=selected_date,
+    weather_history = fetch_weather_history(
+        selected_date=selected_date,
         latitude=latitude,
         longitude=longitude,
     )
 
-    weather = weather_result[
-        "lstm_forecast"
+    current_weather = weather_history[-1]
+    leaf_damage_probability = image_features[
+        "Infected_Probability"
     ]
-
-    # --------------------------------------------------------
-    # DATE FEATURES
-    # --------------------------------------------------------
-
-    month = date.month
-
-    month_sin = np.sin(
-        2 * np.pi * month / 12
+    print(
+        "DEBUG hybrid image:",
+        file.filename,
+        "Infected_Probability:",
+        leaf_damage_probability,
     )
 
-    month_cos = np.cos(
-        2 * np.pi * month / 12
+    synthetic_result = load_synthetic_predictor().predict(
+        recent_observations=weather_history,
+        das=crop_age_days,
+        crop_stage=normalized_stage,
+        leaf_damage_probability=leaf_damage_probability,
     )
 
-    temperature = weather[
+    temperature = current_weather[
         "Temperature_C"
     ]
 
-    humidity = weather[
-        "Humidity_%"
+    humidity = current_weather[
+        "Humidity_pct"
     ]
 
-    rainfall = weather[
+    rainfall = current_weather[
         "Rainfall_mm"
     ]
 
-    soil_moisture = weather[
-        "Soil_Moisture_%"
+    soil_moisture = current_weather[
+        "Soil_Moisture_pct"
     ]
 
-    wind_speed = weather[
+    wind_speed = current_weather[
         "Wind_Speed_kmph"
     ]
 
-    # --------------------------------------------------------
-    # HYBRID FEATURES
-    # --------------------------------------------------------
-
-    sample = pd.DataFrame(
-        [
-            {
-                "Month": month,
-
-                "Month_sin": month_sin,
-
-                "Month_cos": month_cos,
-
-                "Temperature_C": temperature,
-
-                "Humidity_%": humidity,
-
-                "Rainfall_mm": rainfall,
-
-                "Soil_Moisture_%": soil_moisture,
-
-                "Wind_Speed_kmph": wind_speed,
-
-                "Crop_Age_Days": crop_age_days,
-
-                "Crop_Stage_Code": STAGE_MAP[
-                    normalized_stage
-                ],
-
-                "Swin_Mean": image_features[
-                    "Swin_Mean"
-                ],
-
-                "Swin_Std": image_features[
-                    "Swin_Std"
-                ],
-
-                "Swin_Norm": image_features[
-                    "Swin_Norm"
-                ],
-
-                "Image_Class": image_features[
-                    "Image_Class"
-                ],
-
-                "Temperature_Humidity":
-                    temperature * humidity,
-
-                "Rainfall_SoilMoisture":
-                    rainfall * soil_moisture,
-
-                "Weather_Stress":
-                    temperature
-                    + 0.20 * humidity
-                    + 0.30 * rainfall,
-
-                "Crop_Stage": normalized_stage,
-
-                "Maize_Variety": maize_variety,
-            }
-        ]
-    )
-
-    # --------------------------------------------------------
-    # PREDICT
-    # --------------------------------------------------------
-
-    artifact = load_hybrid_model()
-
-    model = artifact["model"]
-
-    probability = model.predict(
-        sample
-    )[0]
-
     probability = float(
         np.clip(
-            probability,
+            synthetic_result["FAW_Attack_Probability"] * 100,
             0,
             100,
         )
+    )
+    print(
+        "DEBUG hybrid result:",
+        file.filename,
+        "faw_attack_probability:",
+        probability,
     )
 
     # --------------------------------------------------------
@@ -517,12 +557,11 @@ async def predict_hybrid(
 
         "weather": {
 
-            key: round(
-                float(value),
-                2,
-            )
-
-            for key, value in weather.items()
+            "Temperature_C": round(temperature, 2),
+            "Humidity_%": round(humidity, 2),
+            "Rainfall_mm": round(rainfall, 2),
+            "Soil_Moisture_%": round(soil_moisture, 2),
+            "Wind_Speed_kmph": round(wind_speed, 2),
 
         },
 
@@ -533,10 +572,40 @@ async def predict_hybrid(
                 2,
             )
 
-            for key, value in weather_result[
-                "selected_weather"
-            ].items()
+            for key, value in current_weather.items()
 
         },
+
+        "faw_attack_probability": round(
+            probability,
+            2,
+        ),
+
+        "risk_level": risk_level,
+
+        "leaf_damage_probability": round(
+            leaf_damage_probability * 100,
+            2,
+        ),
+
+        "das": crop_age_days,
+
+        "crop_stage": normalized_stage,
+
+        "current_weather": {
+            key: round(
+                float(value),
+                2,
+            )
+            for key, value in current_weather.items()
+        },
+
+        "forecast_7_day": synthetic_result[
+            "forecast_features"
+        ],
+
+        "latitude": latitude,
+
+        "longitude": longitude,
 
     }

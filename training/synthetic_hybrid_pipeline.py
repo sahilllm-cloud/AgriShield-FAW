@@ -100,9 +100,60 @@ def _sigmoid(values: np.ndarray) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-np.clip(values, -30, 30)))
 
 
+def _generate_leaf_damage_probabilities(
+    sample_count: int,
+    seed: int,
+) -> np.ndarray:
+    strata = [
+        (0.000001, 0.00001, 10000),
+        (0.00001, 0.0001, 7500),
+        (0.0001, 0.001, 7500),
+        (0.001, 0.01, 7500),
+        (0.01, 0.1, 7500),
+        (0.1, 0.3, 5000),
+        (0.3, 0.6, 3000),
+        (0.6, 1.0, 2000),
+    ]
+
+    if sum(count for _, _, count in strata) != sample_count:
+        raise ValueError(
+            "Leaf probability strata must match the sample count."
+        )
+
+    rng = np.random.default_rng(seed)
+    values = []
+
+    for lower, upper, count in strata:
+        if upper <= 0.01:
+            samples = np.power(
+                10.0,
+                rng.uniform(
+                    np.log10(lower),
+                    np.log10(upper),
+                    count,
+                ),
+            )
+        else:
+            samples = rng.uniform(
+                lower,
+                upper,
+                count,
+            )
+
+        values.append(samples)
+
+    probabilities = np.concatenate(values)
+    rng.shuffle(probabilities)
+    return probabilities
+
+
 def generate_dataset(config: PipelineConfig) -> pd.DataFrame:
     """Generate correlated field-wise daily observations and continuous targets."""
     rng = np.random.default_rng(config.seed)
+    leaf_probabilities = _generate_leaf_damage_probabilities(
+        config.field_count * config.days_per_field,
+        config.seed + 1,
+    )
     rows: list[pd.DataFrame] = []
     base_date = pd.Timestamp("2024-01-01")
     for field_number in range(config.field_count):
@@ -128,9 +179,9 @@ def generate_dataset(config: PipelineConfig) -> pd.DataFrame:
             [-0.35, 0.20, 0.65, 0.55, 0.25],
             default=-0.10,
         )
-        leaf_damage = _sigmoid(
-            -2.0 + 0.045 * (temperature - 24) + 0.035 * (humidity - 60) + 0.018 * rainfall + stage_effect + field_risk
-        )
+        row_start = field_number * config.days_per_field
+        row_end = row_start + config.days_per_field
+        leaf_damage = leaf_probabilities[row_start:row_end]
         # Target-generation coefficients are heuristic synthetic-data parameters,
         # not literature-derived biological weights. The target includes the next
         # seven latent weather days, while the fusion model receives only the LSTM

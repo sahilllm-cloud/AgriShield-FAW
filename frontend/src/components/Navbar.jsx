@@ -21,15 +21,6 @@ function Navbar() {
         </NavLink>
 
         <NavLink
-          to="/detection"
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
-        >
-          Detection
-        </NavLink>
-
-        <NavLink
           to="/prediction"
           className={({ isActive }) =>
             isActive ? "active" : ""

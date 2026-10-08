@@ -31,7 +31,7 @@ const locationPinIcon = L.icon({
 });
 
 const HYBRID_API_URL =
-  "http://127.0.0.1:8000/api/predict/hybrid";
+  "http://localhost:8000/api/predict/hybrid";
 
 const DEFAULT_MAP_CENTER = [12.972, 77.594];
 
@@ -447,44 +447,14 @@ function Prediction() {
       }
 
 
-      // --------------------------------------------------------
-      // TODAY
-      // --------------------------------------------------------
-
-      const todayDate =
-        getTodayDate();
-
-
-      // --------------------------------------------------------
-      // DAS
-      // --------------------------------------------------------
-
-      const sowing =
+      if (
         new Date(
           `${sowingDate}T00:00:00`
-        );
-
-      const today =
+        ) >
         new Date(
-          `${todayDate}T00:00:00`
-        );
-
-      const difference =
-        Math.floor(
-          (
-            today.getTime() -
-            sowing.getTime()
-          ) /
-            (
-              1000 *
-              60 *
-              60 *
-              24
-            )
-        );
-
-
-      if (difference < 0) {
+          `${getTodayDate()}T00:00:00`
+        )
+      ) {
 
         setValidationError(
           "Sowing date cannot be after today."
@@ -492,13 +462,6 @@ function Prediction() {
 
         return;
       }
-
-
-      const das =
-        difference;
-
-      const cropStage =
-        getCropStage(das);
 
 
       // --------------------------------------------------------
@@ -520,44 +483,47 @@ function Prediction() {
         image
       );
 
+      const url =
+        new URL(
+          HYBRID_API_URL
+        );
+
+      url.searchParams.set(
+        "date",
+        todayDate
+      );
+
+      url.searchParams.set(
+        "latitude",
+        latitude
+      );
+
+      url.searchParams.set(
+        "longitude",
+        longitude
+      );
+
+      url.searchParams.set(
+        "crop_stage",
+        calculatedStage ||
+          "Whorl"
+      );
+
+      url.searchParams.set(
+        "crop_age_days",
+        String(
+          calculatedDas ??
+            35
+        )
+      );
+
+      url.searchParams.set(
+        "maize_variety",
+        "Local"
+      );
+
 
       try {
-
-        const url =
-          new URL(
-            HYBRID_API_URL
-          );
-
-        url.searchParams.set(
-          "date",
-          todayDate
-        );
-
-        url.searchParams.set(
-          "latitude",
-          latitude
-        );
-
-        url.searchParams.set(
-          "longitude",
-          longitude
-        );
-
-        url.searchParams.set(
-          "crop_stage",
-          cropStage
-        );
-
-        url.searchParams.set(
-          "crop_age_days",
-          String(das)
-        );
-
-        url.searchParams.set(
-          "maize_variety",
-          "Local"
-        );
-
 
         const response =
           await fetch(
@@ -595,8 +561,23 @@ function Prediction() {
 
         if (!response.ok) {
 
+          console.error(
+            "Hybrid prediction error response:",
+            data
+          );
+
+          const detail =
+            Array.isArray(data.detail)
+              ? data.detail
+                  .map(
+                    (validationError) =>
+                      `${validationError.loc?.join(".") || "request"}: ${validationError.msg}`
+                  )
+                  .join("; ")
+              : data.detail;
+
           throw new Error(
-            data.detail ||
+            detail ||
               "Hybrid prediction failed."
           );
 
@@ -1090,6 +1071,21 @@ function Prediction() {
 
           </div>
 
+          {image && (
+            <p
+              style={{
+                margin:
+                  "10px 0 0",
+                color:
+                  "var(--muted)",
+                fontSize:
+                  "0.85rem",
+              }}
+            >
+              DEBUG: Selected image: {image.name}
+            </p>
+          )}
+
         </div>
 
 
@@ -1501,128 +1497,27 @@ function Prediction() {
 
             </div>
 
-
-            {/* ==================================================
-                IMAGE SCAN RESULT
-                ================================================== */}
-
             <div
               style={{
                 marginTop:
-                  "18px",
+                  "16px",
                 padding:
-                  "20px",
+                  "12px 16px",
                 border:
-                  "1px solid var(--border)",
+                  "1px dashed var(--border)",
                 borderRadius:
-                  "12px",
-                background:
-                  "#fff",
+                  "8px",
+                color:
+                  "var(--muted)",
+                fontSize:
+                  "0.85rem",
               }}
             >
-
-              <span className="console-label">
-                IMAGE SCAN
-              </span>
-
-
-              <div
-                style={{
-                  display:
-                    "flex",
-                  alignItems:
-                    "center",
-                  gap:
-                    "20px",
-                  marginTop:
-                    "14px",
-                  flexWrap:
-                    "wrap",
-                }}
-              >
-
-                {imagePreviewUrl && (
-
-                  <img
-                    src={
-                      imagePreviewUrl
-                    }
-                    alt="Analyzed maize leaf"
-                    style={{
-                      width:
-                        "150px",
-                      height:
-                        "150px",
-                      objectFit:
-                        "cover",
-                      borderRadius:
-                        "12px",
-                      border:
-                        "1px solid var(--border)",
-                    }}
-                  />
-
-                )}
-
-
-                <div>
-
-                  <p
-                    style={{
-                      margin:
-                        "0 0 10px",
-                    }}
-                  >
-                    <strong>
-                      Swin classification:
-                    </strong>{" "}
-                    {
-                      prediction
-                        .image
-                        ?.predicted_class
-                    }
-                  </p>
-
-
-                  <p
-                    style={{
-                      margin:
-                        "0 0 10px",
-                    }}
-                  >
-                    <strong>
-                      Healthy probability:
-                    </strong>{" "}
-                    {
-                      prediction
-                        .image
-                        ?.healthy_probability
-                    }
-                    %
-                  </p>
-
-
-                  <p
-                    style={{
-                      margin:
-                        0,
-                    }}
-                  >
-                    <strong>
-                      Infected probability:
-                    </strong>{" "}
-                    {
-                      prediction
-                        .image
-                        ?.infected_probability
-                    }
-                    %
-                  </p>
-
-                </div>
-
-              </div>
-
+              DEBUG: leaf_damage_probability:{" "}
+              {prediction.leaf_damage_probability}
+              {" | "}
+              faw_attack_probability:{" "}
+              {prediction.faw_attack_probability}
             </div>
 
 
