@@ -1,0 +1,10 @@
+{
+  "dataset": "Wikimedia Commons",
+  "crop_category": "wheat_leaf",
+  "target_count": 5,
+  "status": "rate_limit",
+  "images": [],
+  "errors": [
+    "Commons API rate limit (HTTP 429); no retry attempted."
+  ]
+}

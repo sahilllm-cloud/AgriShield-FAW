@@ -1,0 +1,55 @@
+Focused offline OpenCLIP validator evaluation
+
+Model: ViT-B-32 / laion2b_s34b_b79k (local cache)
+Scores are cosine image/text similarities, not calibrated probabilities.
+Inventory: healthy maize=10, damaged maize=20, labeled non-maize=20, unlabeled extra=6
+Known negative categories: car, cat, dog, truck
+Exact banana incident image available locally: NO
+Split: calibration=37, holdout=13, deterministic stratified 70/30; small and unrepresentative.
+
+baseline_relative
+all: accepted=27/50 rejected=23/50 maize_false_rejections=3 non_maize_false_acceptances=0
+calibration: accepted=19/37 rejected=18/37 maize_false_rejections=2 non_maize_false_acceptances=0
+holdout: accepted=8/13 rejected=5/13 maize_false_rejections=1 non_maize_false_acceptances=0
+by subgroup: {"car": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "cat": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "damaged_maize": {"accepted": 5, "false_acceptances": 0, "false_rejections": 1, "rejected": 1, "total": 6}, "dog": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "healthy_maize": {"accepted": 3, "false_acceptances": 0, "false_rejections": 0, "rejected": 0, "total": 3}, "truck": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}}
+
+expanded_relative
+all: accepted=18/50 rejected=32/50 maize_false_rejections=12 non_maize_false_acceptances=0
+calibration: accepted=12/37 rejected=25/37 maize_false_rejections=9 non_maize_false_acceptances=0
+holdout: accepted=6/13 rejected=7/13 maize_false_rejections=3 non_maize_false_acceptances=0
+by subgroup: {"car": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "cat": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "damaged_maize": {"accepted": 5, "false_acceptances": 0, "false_rejections": 1, "rejected": 1, "total": 6}, "dog": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "healthy_maize": {"accepted": 1, "false_acceptances": 0, "false_rejections": 2, "rejected": 2, "total": 3}, "truck": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}}
+
+expanded_absolute_score_with_relative
+threshold=0.04466542
+calibration: accepted=12/37 rejected=25/37 maize_false_rejections=9 non_maize_false_acceptances=0
+holdout: accepted=6/13 rejected=7/13 maize_false_rejections=3 non_maize_false_acceptances=0
+by subgroup: {"car": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "cat": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "damaged_maize": {"accepted": 5, "false_acceptances": 0, "false_rejections": 1, "rejected": 1, "total": 6}, "dog": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "healthy_maize": {"accepted": 1, "false_acceptances": 0, "false_rejections": 2, "rejected": 2, "total": 3}, "truck": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}}
+
+expanded_margin_with_relative
+threshold=-0.24039077
+calibration: accepted=12/37 rejected=25/37 maize_false_rejections=9 non_maize_false_acceptances=0
+holdout: accepted=6/13 rejected=7/13 maize_false_rejections=3 non_maize_false_acceptances=0
+by subgroup: {"car": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "cat": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "damaged_maize": {"accepted": 5, "false_acceptances": 0, "false_rejections": 1, "rejected": 1, "total": 6}, "dog": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}, "healthy_maize": {"accepted": 1, "false_acceptances": 0, "false_rejections": 2, "rejected": 2, "total": 3}, "truck": {"accepted": 0, "false_acceptances": 0, "false_rejections": 0, "rejected": 1, "total": 1}}
+
+Baseline individual failures:
+{"label": "maize", "maize_score": 0.28734928369522095, "margin": -0.004103958606719971, "non_maize_score": 0.2914532423019409, "path": "validator_dataset\\maize_test\\maize_infected\\13.jpg", "subgroup": "damaged_maize"}
+{"label": "maize", "maize_score": 0.30362468957901, "margin": -0.007440924644470215, "non_maize_score": 0.3110656142234802, "path": "validator_dataset\\maize_test\\maize_infected\\14.jpg", "subgroup": "damaged_maize"}
+{"label": "maize", "maize_score": 0.30102652311325073, "margin": -0.02086162567138672, "non_maize_score": 0.32188814878463745, "path": "validator_dataset\\maize_test\\maize_infected\\20.jpg", "subgroup": "damaged_maize"}
+
+Expanded individual failures:
+{"label": "maize", "maize_score": 0.3274694085121155, "margin": -0.019349634647369385, "non_maize_score": 0.34681904315948486, "path": "validator_dataset\\maize_test\\maize_healthy\\03.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.3304991126060486, "margin": -0.013906210660934448, "non_maize_score": 0.34440532326698303, "path": "validator_dataset\\maize_test\\maize_healthy\\04.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.3144880533218384, "margin": -0.015440762042999268, "non_maize_score": 0.32992881536483765, "path": "validator_dataset\\maize_test\\maize_healthy\\05.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.2874850630760193, "margin": -0.02189415693283081, "non_maize_score": 0.3093792200088501, "path": "validator_dataset\\maize_test\\maize_healthy\\06.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.3358052968978882, "margin": -0.01792854070663452, "non_maize_score": 0.3537338376045227, "path": "validator_dataset\\maize_test\\maize_healthy\\07.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.3350788354873657, "margin": -0.0007019639015197754, "non_maize_score": 0.3357807993888855, "path": "validator_dataset\\maize_test\\maize_healthy\\08.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.35272738337516785, "margin": -0.0027788877487182617, "non_maize_score": 0.3555062711238861, "path": "validator_dataset\\maize_test\\maize_healthy\\09.jpg", "subgroup": "healthy_maize"}
+{"label": "maize", "maize_score": 0.30154260993003845, "margin": -0.00010755658149719238, "non_maize_score": 0.30165016651153564, "path": "validator_dataset\\maize_test\\maize_infected\\01.jpg", "subgroup": "damaged_maize"}
+{"label": "maize", "maize_score": 0.3530927002429962, "margin": -0.0004532337188720703, "non_maize_score": 0.3535459339618683, "path": "validator_dataset\\maize_test\\maize_infected\\07.jpg", "subgroup": "damaged_maize"}
+{"label": "maize", "maize_score": 0.2901460826396942, "margin": -0.010261356830596924, "non_maize_score": 0.30040743947029114, "path": "validator_dataset\\maize_test\\maize_infected\\13.jpg", "subgroup": "damaged_maize"}
+{"label": "maize", "maize_score": 0.30362468957901, "margin": -0.017816662788391113, "non_maize_score": 0.3214413523674011, "path": "validator_dataset\\maize_test\\maize_infected\\14.jpg", "subgroup": "damaged_maize"}
+{"label": "maize", "maize_score": 0.31385287642478943, "margin": -0.005034655332565308, "non_maize_score": 0.31888753175735474, "path": "validator_dataset\\maize_test\\maize_infected\\20.jpg", "subgroup": "damaged_maize"}
+
+Missing required categories: banana exact incident image, tomato leaf, rice leaf, wheat leaf, cotton leaf, other crop leaves, flowers, fruits, insects without maize leaf, people, buildings, landscapes, screenshots, drawings, ambiguous vegetation
+
+Recommendation: Current rule is evaluated only on a narrow object/animal negative set. Do not claim general reliability. Build an independent representative holdout including the missing categories; then compare calibrated thresholding and a biology-specialized model such as BioCLIP only after approved download.

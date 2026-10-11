@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "description": "Labeled image manifest for maize-image validator evaluation.",
+  "categories": [
+    {
+      "name": "healthy_maize",
+      "label": "maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/maize_test/maize_healthy/01.jpg",
+        "validator_dataset/maize_test/maize_healthy/02.jpg",
+        "validator_dataset/maize_test/maize_healthy/03.jpg",
+        "validator_dataset/maize_test/maize_healthy/04.jpg",
+        "validator_dataset/maize_test/maize_healthy/05.jpg",
+        "validator_dataset/maize_test/maize_healthy/06.jpg",
+        "validator_dataset/maize_test/maize_healthy/07.jpg",
+        "validator_dataset/maize_test/maize_healthy/08.jpg",
+        "validator_dataset/maize_test/maize_healthy/09.jpg",
+        "validator_dataset/maize_test/maize_healthy/10.jpg"
+      ]
+    },
+    {
+      "name": "damaged_maize",
+      "label": "maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/maize_test/maize_infected/01.jpg",
+        "validator_dataset/maize_test/maize_infected/02.jpg",
+        "validator_dataset/maize_test/maize_infected/03.jpg",
+        "validator_dataset/maize_test/maize_infected/04.jpg",
+        "validator_dataset/maize_test/maize_infected/05.jpg",
+        "validator_dataset/maize_test/maize_infected/06.jpg",
+        "validator_dataset/maize_test/maize_infected/07.jpg",
+        "validator_dataset/maize_test/maize_infected/08.jpg",
+        "validator_dataset/maize_test/maize_infected/09.jpg",
+        "validator_dataset/maize_test/maize_infected/10.jpg",
+        "validator_dataset/maize_test/maize_infected/11.jpg",
+        "validator_dataset/maize_test/maize_infected/12.jpg",
+        "validator_dataset/maize_test/maize_infected/13.jpg",
+        "validator_dataset/maize_test/maize_infected/14.jpg",
+        "validator_dataset/maize_test/maize_infected/15.jpg",
+        "validator_dataset/maize_test/maize_infected/16.jpg",
+        "validator_dataset/maize_test/maize_infected/17.jpg",
+        "validator_dataset/maize_test/maize_infected/18.jpg",
+        "validator_dataset/maize_test/maize_infected/19.jpg",
+        "validator_dataset/maize_test/maize_infected/20.jpg"
+      ]
+    },
+    {
+      "name": "car",
+      "label": "non_maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/non_maize/car_01.png",
+        "validator_dataset/non_maize/car_02.png",
+        "validator_dataset/non_maize/car_03.png",
+        "validator_dataset/non_maize/car_04.png",
+        "validator_dataset/non_maize/car_05.png"
+      ]
+    },
+    {
+      "name": "truck",
+      "label": "non_maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/non_maize/truck_01.png",
+        "validator_dataset/non_maize/truck_02.png",
+        "validator_dataset/non_maize/truck_03.png",
+        "validator_dataset/non_maize/truck_04.png",
+        "validator_dataset/non_maize/truck_05.png"
+      ]
+    },
+    {
+      "name": "cat",
+      "label": "non_maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/non_maize/cat_01.png",
+        "validator_dataset/non_maize/cat_02.png",
+        "validator_dataset/non_maize/cat_03.png",
+        "validator_dataset/non_maize/cat_04.png",
+        "validator_dataset/non_maize/cat_05.png"
+      ]
+    },
+    {
+      "name": "dog",
+      "label": "non_maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/non_maize/dog_01.png",
+        "validator_dataset/non_maize/dog_02.png",
+        "validator_dataset/non_maize/dog_03.png",
+        "validator_dataset/non_maize/dog_04.png",
+        "validator_dataset/non_maize/dog_05.png"
+      ]
+    },
+    {
+      "name": "banana_leaf",
+      "label": "non_maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/stage1_plant_leaves/banana_leaf/01_3ce05c84ba2a.jpg",
+        "validator_dataset/stage1_plant_leaves/banana_leaf/03_b1399983a49f.jpg",
+        "validator_dataset/stage1_plant_leaves/banana_leaf/04_3857bf125c51.jpg"
+      ]
+    },
+    {
+      "name": "tomato_leaf",
+      "label": "non_maize",
+      "required": true,
+      "paths": [
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/01_61057d9e8bf1.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/02_636af0cb3d00.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/03_16ecfd3a5af6.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/04_aa8591491e0a.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/05_27b980c85253.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/06_0dbe18856994.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/07_7bda79fdb3c3.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/08_cf4a917fa3a3.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/09_524758e2df35.jpg",
+        "validator_dataset/stage1_plant_leaves/tomato_leaf/10_0f765e7f4ffd.jpg"
+      ]
+    },
+    {
+      "name": "rice_leaf",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "wheat_leaf",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "cotton_leaf",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "other_plant_leaf",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "flower",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "fruit",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "insect_without_maize",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "person",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "animal",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "building",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "landscape",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "object",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "screenshot",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "drawing",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    },
+    {
+      "name": "ambiguous_vegetation",
+      "label": "non_maize",
+      "required": true,
+      "paths": []
+    }
+  ]
+}

@@ -19,6 +19,10 @@ from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 from torchvision import transforms
 
 from app.hybrid_predictor import predict_hybrid
+from app.maize_image_validator import (
+    MaizeImageValidatorError,
+    validate_maize_image,
+)
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -722,6 +726,23 @@ async def predict_image(
                 "Could not read the uploaded image."
             ),
         ) from exc
+
+    try:
+        maize_validation = validate_maize_image(image)
+    except MaizeImageValidatorError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Maize image validation is temporarily unavailable. "
+                "Please try again."
+            ),
+        ) from exc
+
+    if not maize_validation.accepted:
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid image. Please upload a clear photo of a maize leaf.",
+        )
 
     transform = transforms.Compose(
         [

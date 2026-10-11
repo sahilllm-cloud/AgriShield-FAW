@@ -1,0 +1,768 @@
+{
+  "category_counts": {
+    "ambiguous_vegetation": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "animal": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "banana_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "building": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "car": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "cat": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "cotton_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "damaged_maize": {
+      "listed": 20,
+      "readable": 20,
+      "unreadable": 0
+    },
+    "dog": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "drawing": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "flower": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "fruit": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "healthy_maize": {
+      "listed": 10,
+      "readable": 10,
+      "unreadable": 0
+    },
+    "insect_without_maize": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "landscape": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "object": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "other_plant_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "person": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "rice_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "screenshot": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "tomato_leaf": {
+      "listed": 10,
+      "readable": 10,
+      "unreadable": 0
+    },
+    "truck": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "wheat_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    }
+  },
+  "required_categories_missing_images": [
+    "ambiguous_vegetation",
+    "animal",
+    "banana_leaf",
+    "building",
+    "cotton_leaf",
+    "drawing",
+    "flower",
+    "fruit",
+    "insect_without_maize",
+    "landscape",
+    "object",
+    "other_plant_leaf",
+    "person",
+    "rice_leaf",
+    "screenshot",
+    "wheat_leaf"
+  ],
+  "errors": [],
+  "totals": {
+    "listed": 60,
+    "readable": 60,
+    "unreadable": 0
+  },
+  "evaluation": {
+    "decision_rule": "best maize similarity > best non-maize similarity",
+    "scores": "cosine image/text similarities; not calibrated probabilities",
+    "by_label": {
+      "maize": {
+        "total": 30,
+        "accepted": 27,
+        "rejected": 3,
+        "acceptance_rate": 0.9,
+        "false_rejections": 3,
+        "false_acceptances": 0
+      },
+      "non_maize": {
+        "total": 30,
+        "accepted": 0,
+        "rejected": 30,
+        "acceptance_rate": 0.0,
+        "false_rejections": 0,
+        "false_acceptances": 0
+      }
+    },
+    "model_errors": [],
+    "results": [
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/01.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.368807315826416,
+        "non_maize_score": 0.30422914028167725,
+        "score_margin": 0.06457817554473877
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/02.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.35189831256866455,
+        "non_maize_score": 0.3078281283378601,
+        "score_margin": 0.04407018423080444
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/03.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.32746943831443787,
+        "non_maize_score": 0.27583497762680054,
+        "score_margin": 0.05163446068763733
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/04.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3304990530014038,
+        "non_maize_score": 0.3183327615261078,
+        "score_margin": 0.01216629147529602
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/05.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.314488023519516,
+        "non_maize_score": 0.2990890145301819,
+        "score_margin": 0.015399008989334106
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/06.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.2874850332736969,
+        "non_maize_score": 0.2874387800693512,
+        "score_margin": 4.6253204345703125e-05
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/07.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3358052670955658,
+        "non_maize_score": 0.27952995896339417,
+        "score_margin": 0.05627530813217163
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/08.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.33507877588272095,
+        "non_maize_score": 0.2642589807510376,
+        "score_margin": 0.07081979513168335
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/09.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.35272732377052307,
+        "non_maize_score": 0.30579903721809387,
+        "score_margin": 0.0469282865524292
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_healthy/10.jpg",
+        "category": "healthy_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.34591007232666016,
+        "non_maize_score": 0.2982715368270874,
+        "score_margin": 0.047638535499572754
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/01.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.2990197241306305,
+        "non_maize_score": 0.28559306263923645,
+        "score_margin": 0.013426661491394043
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/02.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.37326502799987793,
+        "non_maize_score": 0.3023025393486023,
+        "score_margin": 0.07096248865127563
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/03.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3332023620605469,
+        "non_maize_score": 0.3131103515625,
+        "score_margin": 0.020092010498046875
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/04.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3641798496246338,
+        "non_maize_score": 0.3266546130180359,
+        "score_margin": 0.0375252366065979
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/05.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3269863724708557,
+        "non_maize_score": 0.3007710576057434,
+        "score_margin": 0.026215314865112305
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/06.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.35572361946105957,
+        "non_maize_score": 0.3075963854789734,
+        "score_margin": 0.04812723398208618
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/07.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.35182955861091614,
+        "non_maize_score": 0.31186389923095703,
+        "score_margin": 0.039965659379959106
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/08.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.33931756019592285,
+        "non_maize_score": 0.266475647687912,
+        "score_margin": 0.07284191250801086
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/09.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3636931777000427,
+        "non_maize_score": 0.3182823657989502,
+        "score_margin": 0.04541081190109253
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/10.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3834584355354309,
+        "non_maize_score": 0.28959906101226807,
+        "score_margin": 0.09385937452316284
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/11.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.35722142457962036,
+        "non_maize_score": 0.2988009452819824,
+        "score_margin": 0.05842047929763794
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/12.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.37023037672042847,
+        "non_maize_score": 0.31066393852233887,
+        "score_margin": 0.0595664381980896
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/13.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.28734922409057617,
+        "non_maize_score": 0.2914532423019409,
+        "score_margin": -0.004104018211364746
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/14.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.3036246597766876,
+        "non_maize_score": 0.3110656142234802,
+        "score_margin": -0.0074409544467926025
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/15.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.36630022525787354,
+        "non_maize_score": 0.321907639503479,
+        "score_margin": 0.04439258575439453
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/16.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3201662302017212,
+        "non_maize_score": 0.28922075033187866,
+        "score_margin": 0.03094547986984253
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/17.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.3674395680427551,
+        "non_maize_score": 0.2981835603713989,
+        "score_margin": 0.0692560076713562
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/18.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.2891494631767273,
+        "non_maize_score": 0.27361220121383667,
+        "score_margin": 0.015537261962890625
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/19.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": true,
+        "maize_score": 0.35408440232276917,
+        "non_maize_score": 0.264426052570343,
+        "score_margin": 0.08965834975242615
+      },
+      {
+        "path": "validator_dataset/maize_test/maize_infected/20.jpg",
+        "category": "damaged_maize",
+        "label": "maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.30102649331092834,
+        "non_maize_score": 0.32188817858695984,
+        "score_margin": -0.020861685276031494
+      },
+      {
+        "path": "validator_dataset/non_maize/car_01.png",
+        "category": "car",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.06165072321891785,
+        "non_maize_score": 0.18734613060951233,
+        "score_margin": -0.12569540739059448
+      },
+      {
+        "path": "validator_dataset/non_maize/car_02.png",
+        "category": "car",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.049502529203891754,
+        "non_maize_score": 0.15036094188690186,
+        "score_margin": -0.1008584126830101
+      },
+      {
+        "path": "validator_dataset/non_maize/car_03.png",
+        "category": "car",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.08596442639827728,
+        "non_maize_score": 0.15408013761043549,
+        "score_margin": -0.0681157112121582
+      },
+      {
+        "path": "validator_dataset/non_maize/car_04.png",
+        "category": "car",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.05334760993719101,
+        "non_maize_score": 0.20072759687900543,
+        "score_margin": -0.14737998694181442
+      },
+      {
+        "path": "validator_dataset/non_maize/car_05.png",
+        "category": "car",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.10960636287927628,
+        "non_maize_score": 0.21563366055488586,
+        "score_margin": -0.10602729767560959
+      },
+      {
+        "path": "validator_dataset/non_maize/truck_01.png",
+        "category": "truck",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.05897627770900726,
+        "non_maize_score": 0.14803823828697205,
+        "score_margin": -0.08906196057796478
+      },
+      {
+        "path": "validator_dataset/non_maize/truck_02.png",
+        "category": "truck",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.05484093725681305,
+        "non_maize_score": 0.15588662028312683,
+        "score_margin": -0.10104568302631378
+      },
+      {
+        "path": "validator_dataset/non_maize/truck_03.png",
+        "category": "truck",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.044665563851594925,
+        "non_maize_score": 0.15751561522483826,
+        "score_margin": -0.11285005137324333
+      },
+      {
+        "path": "validator_dataset/non_maize/truck_04.png",
+        "category": "truck",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.08126422762870789,
+        "non_maize_score": 0.15957969427108765,
+        "score_margin": -0.07831546664237976
+      },
+      {
+        "path": "validator_dataset/non_maize/truck_05.png",
+        "category": "truck",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.07588799297809601,
+        "non_maize_score": 0.16101573407649994,
+        "score_margin": -0.08512774109840393
+      },
+      {
+        "path": "validator_dataset/non_maize/cat_01.png",
+        "category": "cat",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.11313620209693909,
+        "non_maize_score": 0.21768631041049957,
+        "score_margin": -0.10455010831356049
+      },
+      {
+        "path": "validator_dataset/non_maize/cat_02.png",
+        "category": "cat",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.0939815491437912,
+        "non_maize_score": 0.2196006178855896,
+        "score_margin": -0.1256190687417984
+      },
+      {
+        "path": "validator_dataset/non_maize/cat_03.png",
+        "category": "cat",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.13263079524040222,
+        "non_maize_score": 0.23314696550369263,
+        "score_margin": -0.1005161702632904
+      },
+      {
+        "path": "validator_dataset/non_maize/cat_04.png",
+        "category": "cat",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.09968111664056778,
+        "non_maize_score": 0.22539769113063812,
+        "score_margin": -0.12571657449007034
+      },
+      {
+        "path": "validator_dataset/non_maize/cat_05.png",
+        "category": "cat",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.09703861176967621,
+        "non_maize_score": 0.20942193269729614,
+        "score_margin": -0.11238332092761993
+      },
+      {
+        "path": "validator_dataset/non_maize/dog_01.png",
+        "category": "dog",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.11513783037662506,
+        "non_maize_score": 0.22185713052749634,
+        "score_margin": -0.10671930015087128
+      },
+      {
+        "path": "validator_dataset/non_maize/dog_02.png",
+        "category": "dog",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.07338947057723999,
+        "non_maize_score": 0.21834813058376312,
+        "score_margin": -0.14495866000652313
+      },
+      {
+        "path": "validator_dataset/non_maize/dog_03.png",
+        "category": "dog",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.05701364204287529,
+        "non_maize_score": 0.1877301037311554,
+        "score_margin": -0.1307164616882801
+      },
+      {
+        "path": "validator_dataset/non_maize/dog_04.png",
+        "category": "dog",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.17116409540176392,
+        "non_maize_score": 0.24094229936599731,
+        "score_margin": -0.0697782039642334
+      },
+      {
+        "path": "validator_dataset/non_maize/dog_05.png",
+        "category": "dog",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.10636894404888153,
+        "non_maize_score": 0.22001487016677856,
+        "score_margin": -0.11364592611789703
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/01_61057d9e8bf1.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.27281105518341064,
+        "non_maize_score": 0.3106280267238617,
+        "score_margin": -0.03781697154045105
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/02_636af0cb3d00.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.2994798719882965,
+        "non_maize_score": 0.3235696852207184,
+        "score_margin": -0.024089813232421875
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/03_16ecfd3a5af6.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.2855086922645569,
+        "non_maize_score": 0.33079954981803894,
+        "score_margin": -0.045290857553482056
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/04_aa8591491e0a.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.2728058695793152,
+        "non_maize_score": 0.3276941180229187,
+        "score_margin": -0.054888248443603516
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/05_27b980c85253.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.3101375102996826,
+        "non_maize_score": 0.3203015923500061,
+        "score_margin": -0.010164082050323486
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/06_0dbe18856994.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.2872323989868164,
+        "non_maize_score": 0.31181666254997253,
+        "score_margin": -0.024584263563156128
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/07_7bda79fdb3c3.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.2923995852470398,
+        "non_maize_score": 0.3232051134109497,
+        "score_margin": -0.030805528163909912
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/08_cf4a917fa3a3.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.2734765410423279,
+        "non_maize_score": 0.31674474477767944,
+        "score_margin": -0.04326820373535156
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/09_524758e2df35.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.28825637698173523,
+        "non_maize_score": 0.33531007170677185,
+        "score_margin": -0.04705369472503662
+      },
+      {
+        "path": "validator_dataset/stage1_plant_leaves/tomato_leaf/10_0f765e7f4ffd.jpg",
+        "category": "tomato_leaf",
+        "label": "non_maize",
+        "readable": true,
+        "accepted": false,
+        "maize_score": 0.3047512173652649,
+        "non_maize_score": 0.32447153329849243,
+        "score_margin": -0.01972031593322754
+      }
+    ]
+  }
+}

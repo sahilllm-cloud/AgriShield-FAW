@@ -1,0 +1,89 @@
+{
+  "dataset": "mohanty/PlantVillage",
+  "license": "CC BY-SA 3.0",
+  "split": "train",
+  "archive_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+  "split_url": "https://huggingface.co/datasets/mohanty/PlantVillage/raw/main/splits/color_train.txt",
+  "images": [
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\01_61057d9e8bf1.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/27ba7432-8547-436c-9b97-adf3cbe15575___RS_Erly.B 7544.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "1381fea1304fef6084ddac8001c7057d77453addf864b25ed5f569bf0e255961"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\02_636af0cb3d00.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/c78483c5-424f-4a5f-aab3-5b909b62a7e6___RS_Erly.B 7541.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "efdba0900b51e1b48c33ca7936a9f42488fb579a2d2de21c394e569b3114b9d5"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\03_16ecfd3a5af6.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/289972f1-4f80-432d-8f44-39c16ea787c3___RS_Erly.B 7542.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "968c679f1a86bfc719320a31aded147409582a602c8a2fd793e392933620b1b5"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\04_aa8591491e0a.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/08615b7d-eca7-487e-a9ea-07842ecf81e8___RS_Erly.B 7543.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "4af0d0fcec85a266648273f48a83382b3f4a1da9df304450b261023588eb0abe"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\05_27b980c85253.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/cc822ace-0411-4ff9-b040-3670031c6467___RS_Erly.B 7553.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "4b703f39f77a9f635c4fe3288dcdb74a4c3acdd2ee9de33cfe32750eaca5d266"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\06_0dbe18856994.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/d98cdabc-9183-4829-aa46-d40538d25462___RS_Erly.B 7554.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "4e117d04227e4b325a98e7c46c8fe3b1fa8941d844d4fb370f77e336c38900d3"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\07_7bda79fdb3c3.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/ca7035fa-f55d-49c7-9d89-3d513c8e35b1___RS_Erly.B 7556.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "94ee35b993f0b72380f1215b50b96aba73442618e91bd967d351494606e9f520"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\08_cf4a917fa3a3.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/fcf97241-bd84-4829-b326-72590a3f4f59___RS_Erly.B 7555.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "2edd9b718e13e7f1c53f9aa96e7eb435c9eb89d30a4bd1f6368c10f450211bd7"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\09_524758e2df35.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/5e10503d-8b4e-4215-9128-b92b48fce53d___RS_Erly.B 7559.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "afcfa318180731b75d98c1ad3109149d2511d88b5655dd6fe445d1ba10ae2854"
+    },
+    {
+      "local_path": "validator_dataset\\stage1_plant_leaves\\tomato_leaf\\10_0f765e7f4ffd.jpg",
+      "original_path": "raw/color/Tomato___Early_blight/7cd27862-7a89-4ffc-bc08-7dfbb24f76d9___RS_Erly.B 7560.JPG",
+      "label": "Tomato___Early_blight",
+      "source_url": "https://huggingface.co/datasets/mohanty/PlantVillage/resolve/main/data.zip",
+      "license": "CC BY-SA 3.0",
+      "sha256": "8d965906c58aa28262471809826e03a46153ae10328f38502f074a512136afc3"
+    }
+  ]
+}

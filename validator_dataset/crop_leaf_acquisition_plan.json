@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source": "Wikimedia Commons",
+  "api_url": "https://commons.wikimedia.org/w/api.php",
+  "mode": "metadata-only",
+  "manual_visual_verification_required": true,
+  "categories": {
+    "rice_leaf": {
+      "status": "api_error",
+      "requested": 10,
+      "selected": 0,
+      "shortfall": 10,
+      "metadata_requests": 0,
+      "advertised_total_bytes": 0,
+      "candidates": [],
+      "error": "Commons API rate limit (HTTP 429); no retry attempted.",
+      "availability_assessed": false
+    },
+    "wheat_leaf": {
+      "status": "completed_metadata_search",
+      "requested": 10,
+      "selected": 0,
+      "shortfall": 10,
+      "metadata_requests": 1,
+      "advertised_total_bytes": 0,
+      "candidates": [],
+      "error": null,
+      "availability_assessed": false
+    },
+    "cotton_leaf": {
+      "status": "completed_metadata_search",
+      "requested": 10,
+      "selected": 0,
+      "shortfall": 10,
+      "metadata_requests": 1,
+      "advertised_total_bytes": 0,
+      "candidates": [],
+      "error": null,
+      "availability_assessed": false
+    }
+  },
+  "advertised_total_bytes": 0
+}

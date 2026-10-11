@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import io
 import json
+import hashlib
+import logging
 from pathlib import Path
 from typing import Any
 from datetime import date as date_type, timedelta
@@ -18,6 +20,10 @@ from torchvision import transforms
 
 from training.synthetic_hybrid_predictor import (
     SyntheticHybridPredictor,
+)
+from app.maize_image_validator import (
+    MaizeImageValidatorError,
+    validate_maize_image,
 )
 
 
@@ -39,6 +45,7 @@ HYBRID_MODEL_PATH = MODELS_DIR / "hybrid_faw_model.pkl"
 _swin_model = None
 _hybrid_artifact = None
 _synthetic_predictor = None
+logger = logging.getLogger(__name__)
 
 
 # ============================================================
@@ -212,7 +219,7 @@ def fetch_weather_history(
 
 async def extract_image_features(
     file: UploadFile,
-) -> dict[str, float]:
+) -> dict[str, Any]:
 
     if not file.filename:
         raise HTTPException(
@@ -230,6 +237,13 @@ async def extract_image_features(
         )
 
     image_bytes = await file.read()
+    image_sha256 = hashlib.sha256(image_bytes).hexdigest()
+    logger.info(
+        "Hybrid upload filename=%s size_bytes=%d sha256=%s",
+        file.filename,
+        len(image_bytes),
+        image_sha256,
+    )
 
     try:
 
@@ -243,6 +257,32 @@ async def extract_image_features(
             status_code=400,
             detail="Could not read the uploaded image.",
         ) from exc
+
+    try:
+        maize_validation = validate_maize_image(image)
+    except MaizeImageValidatorError as exc:
+        logger.exception(
+            "Maize image validator failed for filename=%s",
+            file.filename,
+        )
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Maize image validation is temporarily unavailable. "
+                "Please try again."
+            ),
+        ) from exc
+
+    if not maize_validation.accepted:
+        logger.info(
+            "Rejected non-maize image filename=%s validation=%s",
+            file.filename,
+            maize_validation.as_log_dict(),
+        )
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid image. Please upload a clear photo of a maize leaf.",
+        )
 
     transform = transforms.Compose(
         [
@@ -308,6 +348,9 @@ async def extract_image_features(
     )
 
     return {
+        "Image_Filename": file.filename,
+        "Image_Size_Bytes": float(len(image_bytes)),
+        "Image_SHA256": image_sha256,
         "Swin_Mean": float(
             np.mean(feature_vector)
         ),
@@ -428,12 +471,6 @@ async def predict_hybrid(
     leaf_damage_probability = image_features[
         "Infected_Probability"
     ]
-    print(
-        "DEBUG hybrid image:",
-        file.filename,
-        "Infected_Probability:",
-        leaf_damage_probability,
-    )
 
     synthetic_result = load_synthetic_predictor().predict(
         recent_observations=weather_history,
@@ -469,13 +506,6 @@ async def predict_hybrid(
             100,
         )
     )
-    print(
-        "DEBUG hybrid result:",
-        file.filename,
-        "faw_attack_probability:",
-        probability,
-    )
-
     # --------------------------------------------------------
     # RISK LEVEL
     # --------------------------------------------------------
@@ -495,6 +525,18 @@ async def predict_hybrid(
     # --------------------------------------------------------
     # RESULT
     # --------------------------------------------------------
+
+    print(
+        "Hybrid prediction "
+        f"filename={image_features['Image_Filename']} "
+        f"sha256={image_features['Image_SHA256']} "
+        f"swin_infected_probability={image_features['Infected_Probability']:.10f} "
+        f"faw_leaf_damage_probability={leaf_damage_probability:.10f} "
+        f"raw_lightgbm_output={synthetic_result['raw_lightgbm_output']:.10f} "
+        f"final_percentage={probability:.10f} "
+        f"risk_category={risk_level}",
+        flush=True,
+    )
 
     return {
 

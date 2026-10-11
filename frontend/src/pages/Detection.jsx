@@ -18,6 +18,8 @@ function Detection() {
   const handleDetection = async () => {
     if (!selectedImage) return;
 
+    setResult(null);
+
     const formData = new FormData();
     formData.append("file", selectedImage);
 
@@ -28,7 +30,10 @@ function Detection() {
       });
 
       if (!response.ok) {
-        throw new Error("Prediction request failed");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.detail || "Prediction request failed"
+        );
       }
 
       const data = await response.json();
@@ -41,9 +46,9 @@ function Detection() {
     } catch (error) {
       console.error("Detection error:", error);
       setResult({
-        label: "Prediction failed",
+        label: error.message || "Prediction failed",
         confidence: "N/A",
-        model: "Swin Transformer",
+        model: "Validation failed",
       });
     }
   };

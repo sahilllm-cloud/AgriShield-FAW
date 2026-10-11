@@ -26,7 +26,11 @@ from .synthetic_hybrid_pipeline import (
 ROOT = Path(__file__).resolve().parents[1]
 LSTM_PATH = ROOT / "models" / "synthetic_hybrid_lstm.pth"
 SCALER_PATH = ROOT / "models" / "synthetic_hybrid_weather_scaler.pkl"
-FUSION_PATH = ROOT / "models" / "synthetic_hybrid_lightgbm.pkl"
+FUSION_PATH = (
+    ROOT
+    / "models"
+    / "synthetic_hybrid_lightgbm_image_aware_clean.pkl"
+)
 
 
 class SyntheticHybridPredictor:
@@ -64,8 +68,22 @@ class SyntheticHybridPredictor:
         row.update({"DAS": int(das), "FAW_leaf_damage_probability": float(leaf_damage_probability), "Crop_Stage": selected_stage})
         frame = pd.DataFrame([row])
         features = build_fusion_frame(frame).reindex(columns=FUSION_FEATURES, fill_value=0.0)
-        probability = float(np.clip(self.fusion.predict(features)[0], 0.0, 1.0))
-        return {"FAW_Attack_Probability": probability, "DAS": int(das), "Crop_Stage": selected_stage, "forecast_features": {feature: row[feature] for feature in FORECAST_FEATURES}, "prediction_date": date.today().isoformat()}
+        raw_probability = float(self.fusion.predict(features)[0])
+        probability = float(np.clip(raw_probability, 0.0, 1.0))
+        return {
+            "FAW_Attack_Probability": probability,
+            "raw_lightgbm_output": raw_probability,
+            "lightgbm_feature_order": list(features.columns),
+            "lightgbm_feature_vector": [
+                float(value) for value in features.iloc[0].tolist()
+            ],
+            "DAS": int(das),
+            "Crop_Stage": selected_stage,
+            "forecast_features": {
+                feature: row[feature] for feature in FORECAST_FEATURES
+            },
+            "prediction_date": date.today().isoformat(),
+        }
 
 
 def predict_hybrid(recent_observations: pd.DataFrame | list[Mapping[str, Any]], das: int, crop_stage: str | None = None, leaf_damage_probability: float = 0.0) -> dict[str, Any]:

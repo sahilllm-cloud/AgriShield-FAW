@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import {
   MapContainer,
@@ -349,6 +349,8 @@ function Prediction() {
     isSearchingLocation,
     setIsSearchingLocation,
   ] = useState(false);
+  const predictionRequestId =
+    useRef(0);
 
 
   // ==========================================================
@@ -398,6 +400,15 @@ function Prediction() {
       setPrediction(null);
 
       setValidationError("");
+      predictionRequestId.current += 1;
+      console.info(
+        "Hybrid image selected:",
+        {
+          name: file.name,
+          size: file.size,
+          lastModified: file.lastModified,
+        }
+      );
     };
 
 
@@ -473,7 +484,12 @@ function Prediction() {
       setPrediction(null);
 
       setIsSubmitting(true);
-
+      const requestId =
+        predictionRequestId.current + 1;
+      predictionRequestId.current =
+        requestId;
+      const submittedImage =
+        image;
 
       const formData =
         new FormData();
@@ -490,7 +506,7 @@ function Prediction() {
 
       url.searchParams.set(
         "date",
-        todayDate
+        sowingDate
       );
 
       url.searchParams.set(
@@ -522,6 +538,17 @@ function Prediction() {
         "Local"
       );
 
+      console.info(
+        "Hybrid prediction request:",
+        {
+          requestId,
+          name: submittedImage.name,
+          size: submittedImage.size,
+          date: sowingDate,
+          latitude,
+          longitude,
+        }
+      );
 
       try {
 
@@ -583,6 +610,29 @@ function Prediction() {
 
         }
 
+        console.info(
+          "Hybrid prediction response:",
+          {
+            requestId,
+            name: submittedImage.name,
+            response: data,
+            displayedProbability:
+              data.prediction?.faw_attack_probability,
+            displayedRisk:
+              data.prediction?.risk_level,
+          }
+        );
+
+        if (
+          requestId !==
+          predictionRequestId.current
+        ) {
+          console.info(
+            "Ignoring stale hybrid response:",
+            requestId
+          );
+          return;
+        }
 
         setPrediction(
           data

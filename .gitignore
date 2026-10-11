@@ -219,3 +219,8 @@ __marimo__/
 
 # AgriShield datasets
 data/images/
+# Local test images, logs, and downloaded datasets
+FAW_Test_Images/
+backend_error.txt
+validator_dataset/cifar10_source/
+validator_dataset/source/

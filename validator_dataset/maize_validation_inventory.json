@@ -1,0 +1,144 @@
+{
+  "category_counts": {
+    "ambiguous_vegetation": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "animal": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "banana_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "building": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "car": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "cat": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "cotton_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "damaged_maize": {
+      "listed": 20,
+      "readable": 20,
+      "unreadable": 0
+    },
+    "dog": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "drawing": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "flower": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "fruit": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "healthy_maize": {
+      "listed": 10,
+      "readable": 10,
+      "unreadable": 0
+    },
+    "insect_without_maize": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "landscape": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "object": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "other_plant_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "person": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "rice_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "screenshot": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "tomato_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    },
+    "truck": {
+      "listed": 5,
+      "readable": 5,
+      "unreadable": 0
+    },
+    "wheat_leaf": {
+      "listed": 0,
+      "readable": 0,
+      "unreadable": 0
+    }
+  },
+  "required_categories_missing_images": [
+    "ambiguous_vegetation",
+    "animal",
+    "banana_leaf",
+    "building",
+    "cotton_leaf",
+    "drawing",
+    "flower",
+    "fruit",
+    "insect_without_maize",
+    "landscape",
+    "object",
+    "other_plant_leaf",
+    "person",
+    "rice_leaf",
+    "screenshot",
+    "tomato_leaf",
+    "wheat_leaf"
+  ],
+  "errors": [],
+  "totals": {
+    "listed": 50,
+    "readable": 50,
+    "unreadable": 0
+  }
+}
