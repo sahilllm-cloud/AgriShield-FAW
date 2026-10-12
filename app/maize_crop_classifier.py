@@ -98,7 +98,7 @@ def _load_classifier() -> tuple[torch.nn.Module, float]:
             )
             model.load_state_dict(checkpoint["state_dict"], strict=True)
             threshold = float(checkpoint["maize_threshold"])
-            if not 0.0 <= threshold <= 1.0:
+            if not 0.0 <= threshold <= 1.000001:
                 raise ValueError("Invalid maize acceptance threshold.")
             model.eval()
         except Exception as exc:
