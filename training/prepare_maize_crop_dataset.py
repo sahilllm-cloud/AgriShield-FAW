@@ -1,10 +1,9 @@
-"""Download a small, labelled maize/non-maize subset from PlantVillage into ImageFolder folders.
+"""Stream a small maize/non-maize subset from PlantVillage into ImageFolder folders.
 
-Source: geraldmc/plantvillage-full (PlantVillage images; dataset card lists CC0 1.0).
-This script downloads only selected rows/images, not the entire dataset archive.
-Non-maize species are split by species group so validation/test include crop types
-not used as negative training examples. This is still a controlled-background dataset;
-add field images before making broad real-world generalization claims.
+Uses geraldmc/plantvillage-full with streaming so it does not intentionally cache
+the full 54k-image dataset. Saves up to 100 maize and 100 non-maize images by
+default (60 train, 20 validation, 20 test per class). PlantVillage images have
+controlled backgrounds; this is only a starter experiment, not field validation.
 """
 from __future__ import annotations
 
@@ -17,17 +16,10 @@ from pathlib import Path
 
 from datasets import load_dataset
 
-
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = ROOT / "data" / "maize_crop_classifier"
 DATASET_ID = "geraldmc/plantvillage-full"
 REVISION = "v0.1.0"
-# Keep some plant species entirely out of negative training.
-TRAIN_NEGATIVE_HOSTS = {"Apple", "Grape", "Tomato", "Potato", "Pepper, bell"}
-VAL_NEGATIVE_HOSTS = {"Orange", "Soybean", "Squash"}
-TEST_NEGATIVE_HOSTS = {"Blueberry", "Cherry (including sour)", "Peach", "Raspberry", "Strawberry"}
-MAX_MAIZE_PER_SPLIT = {"train": 1000, "val": 250, "test": 300}
-MAX_NEGATIVE_PER_SPLIT = {"train": 1500, "val": 500, "test": 700}
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 
 
@@ -35,92 +27,109 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--max-maize-train", type=int, default=1000)
-    parser.add_argument("--max-negative-train", type=int, default=1500)
-    parser.add_argument("--max-maize-val", type=int, default=250)
-    parser.add_argument("--max-negative-val", type=int, default=500)
-    parser.add_argument("--max-maize-test", type=int, default=300)
-    parser.add_argument("--max-negative-test", type=int, default=700)
+    parser.add_argument("--max-maize-train", type=int, default=60)
+    parser.add_argument("--max-negative-train", type=int, default=60)
+    parser.add_argument("--max-maize-val", type=int, default=20)
+    parser.add_argument("--max-negative-val", type=int, default=20)
+    parser.add_argument("--max-maize-test", type=int, default=20)
+    parser.add_argument("--max-negative-test", type=int, default=20)
+    parser.add_argument(
+        "--shuffle-buffer",
+        type=int,
+        default=2000,
+        help="Streaming shuffle buffer; larger gives better mixing but uses more memory.",
+    )
     return parser.parse_args()
 
 
 def safe_name(value: str) -> str:
-    cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", value).strip("._")
-    return cleaned[:100] or "image"
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", value).strip("._")[:100] or "leaf"
 
 
-def save_image(row, destination: Path, used_hashes: set[str]) -> bool:
+def save_image(row, destination: Path) -> str | None:
     image = row.get("image")
     if image is None:
-        return False
+        return None
     image = image.convert("RGB")
-    # Hash pixels so duplicate images cannot cross splits.
     digest = hashlib.sha256(image.tobytes()).hexdigest()
-    if digest in used_hashes:
-        return False
-    used_hashes.add(digest)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination = destination.with_suffix(".jpg")
     image.save(destination, format="JPEG", quality=94)
-    return True
+    return digest
 
 
 def main() -> int:
     args = parse_args()
     random.seed(args.seed)
-    caps = {
+    splits = {
         "train": (args.max_maize_train, args.max_negative_train),
         "val": (args.max_maize_val, args.max_negative_val),
         "test": (args.max_maize_test, args.max_negative_test),
     }
-    if any(a <= 0 or b <= 0 for a, b in caps.values()):
-        print("ERROR: image caps must be positive.", file=sys.stderr)
+    if args.shuffle_buffer < 100:
+        print("ERROR: --shuffle-buffer must be at least 100.", file=sys.stderr)
+        return 2
+    if any(maize <= 0 or non_maize <= 0 for maize, non_maize in splits.values()):
+        print("ERROR: all requested image counts must be positive.", file=sys.stderr)
         return 2
 
-    print(f"Loading {DATASET_ID} revision {REVISION}. First run downloads dataset shards.")
-    dataset = load_dataset(DATASET_ID, revision=REVISION, split="train")
-    needed = {"image", "host", "class_label"}
-    if not needed.issubset(set(dataset.column_names)):
-        raise RuntimeError(f"Dataset fields changed; expected {needed}, got {dataset.column_names}")
-
-    # Stable per-species allocation avoids putting the same non-maize species
-    # in train and held-out splits. Maize itself is sampled separately per split.
-    buckets = {split: {"maize": [], "non_maize": []} for split in caps}
-    unknown_hosts = set()
-    for row in dataset:
-        host = str(row.get("host", "")).strip()
-        if host.lower() in {"corn", "corn (maize)", "maize"}:
-            buckets["train"]["maize"].append(row)
-            # Repartition maize examples below, not by disease label.
-            continue
-        if host in TRAIN_NEGATIVE_HOSTS:
-            buckets["train"]["non_maize"].append(row)
-        elif host in VAL_NEGATIVE_HOSTS:
-            buckets["val"]["non_maize"].append(row)
-        elif host in TEST_NEGATIVE_HOSTS:
-            buckets["test"]["non_maize"].append(row)
-        else:
-            unknown_hosts.add(host)
-
-    maize_rows = buckets["train"]["maize"]
-    random.shuffle(maize_rows)
-    n_train, n_val, n_test = caps["train"][0], caps["val"][0], caps["test"][0]
-    maize_splits = {
-        "train": maize_rows[:n_train],
-        "val": maize_rows[n_train:n_train + n_val],
-        "test": maize_rows[n_train + n_val:n_train + n_val + n_test],
+    targets = {
+        "maize": sum(pair[0] for pair in splits.values()),
+        "non_maize": sum(pair[1] for pair in splits.values()),
     }
-    if not maize_splits["train"] or not maize_splits["val"] or not maize_splits["test"]:
-        raise RuntimeError("Not enough maize images to fill all splits.")
-    for split, rows in maize_splits.items():
-        buckets[split]["maize"] = rows
+    selected = {"maize": [], "non_maize": []}
+    seen_hashes: set[str] = set()
 
-    print("Dataset hosts not selected for this small starter subset:", ", ".join(sorted(unknown_hosts)))
-    print("Non-maize host split: train=", sorted(TRAIN_NEGATIVE_HOSTS),
-          "| val=", sorted(VAL_NEGATIVE_HOSTS), "| test=", sorted(TEST_NEGATIVE_HOSTS))
+    print(f"Streaming {DATASET_ID} revision {REVISION}; full dataset is not explicitly materialized.")
+    dataset = load_dataset(
+        DATASET_ID,
+        revision=REVISION,
+        split="train",
+        streaming=True,
+    ).shuffle(seed=args.seed, buffer_size=args.shuffle_buffer)
 
-    # Remove only files we own within the six target class folders to make reruns deterministic.
-    for split in caps:
+    for row in dataset:
+        host = str(row.get("host", "")).strip().lower()
+        if host in {"corn", "corn (maize)", "maize"}:
+            label = "maize"
+        elif host:
+            label = "non_maize"
+        else:
+            continue
+
+        if len(selected[label]) >= targets[label]:
+            if all(len(selected[name]) >= targets[name] for name in targets):
+                break
+            continue
+
+        image = row.get("image")
+        if image is None:
+            continue
+        image = image.convert("RGB")
+        digest = hashlib.sha256(image.tobytes()).hexdigest()
+        if digest in seen_hashes:
+            continue
+        seen_hashes.add(digest)
+        selected[label].append({
+            "image": image,
+            "host": str(row.get("host", "unknown")),
+            "class_label": str(row.get("class_label", "leaf")),
+            "digest": digest,
+        })
+        if all(len(selected[name]) >= targets[name] for name in targets):
+            break
+
+    for label in targets:
+        if len(selected[label]) < targets[label]:
+            print(
+                f"ERROR: requested {targets[label]} {label} images but found "
+                f"{len(selected[label])}. Check dataset access/host labels.",
+                file=sys.stderr,
+            )
+            return 1
+
+    # Clear only image files in the six folders owned by this script.
+    for split in splits:
         for label in ("maize", "non_maize"):
             folder = args.output / split / label
             if folder.exists():
@@ -128,27 +137,26 @@ def main() -> int:
                     if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS:
                         path.unlink()
 
-    used_hashes: set[str] = set()
+    cursor = {"maize": 0, "non_maize": 0}
     summary = {}
-    for split, (maize_cap, negative_cap) in caps.items():
+    for split, (maize_count, non_maize_count) in splits.items():
         split_summary = {}
-        for label, cap in (("maize", maize_cap), ("non_maize", negative_cap)):
-            rows = list(buckets[split][label])
-            random.shuffle(rows)
-            selected = rows[:cap]
+        for label, count in (("maize", maize_count), ("non_maize", non_maize_count)):
+            rows = selected[label][cursor[label]:cursor[label] + count]
+            cursor[label] += count
             written = 0
-            for index, row in enumerate(selected):
-                class_label = safe_name(str(row.get("class_label", "leaf")))
-                filename = f"{index:05d}_{class_label}.jpg"
-                if save_image(row, args.output / split / label / filename, used_hashes):
-                    written += 1
-            split_summary[label] = {"available": len(rows), "written": written}
+            for i, row in enumerate(rows):
+                filename = f"{i:04d}_{safe_name(row['host'])}_{safe_name(row['class_label'])}.jpg"
+                destination = args.output / split / label / filename
+                row["image"].save(destination, format="JPEG", quality=94)
+                written += 1
+            split_summary[label] = written
         summary[split] = split_summary
         print(f"{split}: {split_summary}")
 
-    print(f"Images saved under: {args.output}")
-    print("Review sample images and licenses/citation in the source dataset card before research publication.")
-    print("This is a starter subset, not a field-diverse guarantee; add local field images and evaluate before enabling the gate.")
+    print(f"Done. Images saved under: {args.output}")
+    print(f"Total images: maize={targets['maize']}, non_maize={targets['non_maize']}")
+    print("Note: use the held-out test results cautiously; add field images before real-world claims.")
     return 0
 
 
