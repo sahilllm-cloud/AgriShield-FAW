@@ -25,6 +25,7 @@ from app.maize_image_validator import (
     MaizeImageValidatorError,
     validate_maize_image,
 )
+from app.maize_crop_classifier import enforce_maize_crop_identity
 
 
 # ============================================================
@@ -257,6 +258,8 @@ async def extract_image_features(
             status_code=400,
             detail="Could not read the uploaded image.",
         ) from exc
+
+    enforce_maize_crop_identity(image, file.filename)
 
     try:
         maize_validation = validate_maize_image(image)

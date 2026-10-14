@@ -224,3 +224,6 @@ FAW_Test_Images/
 backend_error.txt
 validator_dataset/cifar10_source/
 validator_dataset/source/
+# Local maize crop-identity training data and generated checkpoint
+data/maize_crop_classifier/
+models/maize_crop_classifier.pth

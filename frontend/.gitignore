@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+
+# Local environment and secrets
+.env.*
+!.env.example
+
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Local editor and temporary files
+.DS_Store
+Thumbs.db
