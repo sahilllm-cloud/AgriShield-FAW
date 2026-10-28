@@ -4035,5 +4035,850 @@ a {
     padding:
       22px 20px;
   }
+  .auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  padding: 24px;
+}
 
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h1,
+.auth-card p {
+  margin: 0 0 8px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+
+.auth-card button {
+  padding: 12px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.auth-error {
+  color: #b42318;
+  padding: 10px;
+  background: #fee4e2;
+  border-radius: 7px;
+}
+
+/* AgriShield Logout Button */
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid #65a985;
+  border-radius: 10px;
+  background: #176844;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #218354;
+  border-color: #a4d7b8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+.logout-btn:focus-visible {
+  outline: 2px solid #f4c95d;
+  outline-offset: 3px;
+}
+
+.navbar-links .logout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 12px 15px;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  line-height: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navbar-links .logout-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.navbar-links .logout-btn svg {
+  flex-shrink: 0;
+}
+
+/* Force Logout to match the navbar navigation links */
+.navbar-links > .logout-btn {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+
+  padding: 12px 15px !important;
+  margin: 0 !important;
+
+  background: transparent !important;
+  color: #e4eee7 !important;
+
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  outline: none;
+
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: 600 !important;
+  line-height: inherit !important;
+
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navbar-links > .logout-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.navbar-links > .logout-btn:focus,
+.navbar-links > .logout-btn:active {
+  outline: none;
+  box-shadow: none !important;
+}
+
+.navbar-links > .logout-btn svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+}
+
+/* Logout button — visually matches navbar links */
+.navbar-links > button.logout-btn {
+  all: unset;
+  box-sizing: border-box;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  color: rgba(255, 255, 255, 0.76);
+  background: transparent;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+.navbar-links > button.logout-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.navbar-links > button.logout-btn:focus-visible {
+  outline: 2px solid #ffe6a3;
+  outline-offset: 3px;
+}
+
+.navbar-links > button.logout-btn svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   AGRISHIELD PROFILE MENU
+   ========================================= */
+
+.navbar-links .profile-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-links .profile-trigger {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 255px;
+  padding: 5px 8px;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s ease;
+}
+
+.navbar-links .profile-trigger:hover,
+.navbar-links .profile-trigger[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.navbar-links .profile-trigger:focus-visible {
+  outline: 2px solid #ffe6a3;
+  outline-offset: 2px;
+}
+
+.profile-avatar {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: #e0f2e5;
+  color: #0b542b;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.profile-trigger-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+.profile-trigger-email {
+  max-width: 155px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profile-trigger-label {
+  color: rgba(255, 255, 255, 0.67);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.profile-chevron {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s ease;
+}
+
+.profile-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.navbar-links .profile-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 2000;
+  width: 330px;
+  max-width: calc(100vw - 24px);
+  padding: 10px;
+  border: 1px solid #dce9df;
+  border-radius: 18px;
+  background: #fff;
+  color: #183b28;
+  box-shadow: 0 18px 50px rgba(4, 38, 20, 0.22);
+  animation: profileDropdownEnter 0.16s ease-out;
+}
+
+@keyframes profileDropdownEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 10px;
+}
+
+.profile-avatar-large {
+  width: 48px;
+  height: 48px;
+  flex-basis: 48px;
+  border-color: #cce5d3;
+  font-size: 20px;
+}
+
+.profile-account-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.profile-account-details strong {
+  color: #123d25;
+  font-size: 15px;
+}
+
+.profile-account-details > span {
+  overflow-wrap: anywhere;
+  color: #53685b;
+  font-size: 12px;
+}
+
+.profile-account-details small {
+  color: #168143;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.profile-dropdown-divider {
+  height: 1px;
+  margin: 5px 2px;
+  background: #e7eee9;
+}
+
+.profile-info-item,
+.navbar-links .profile-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 10px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #254534;
+  text-align: left;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.profile-info-item > div,
+.profile-link-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.profile-info-item strong,
+.profile-link-text strong {
+  color: #183b28;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profile-info-item > div > span {
+  overflow-wrap: anywhere;
+  color: #738178;
+  font-size: 11px;
+}
+
+.profile-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #edf7f0;
+  color: #176844;
+}
+
+.navbar-links .profile-dropdown-link {
+  position: static;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.navbar-links .profile-dropdown-link:hover {
+  background: #f0f8f2;
+  color: #0b542b;
+}
+
+.navbar-links .profile-dropdown-link::after {
+  display: none;
+}
+
+.profile-link-text small {
+  color: #7a8980;
+  font-size: 11px;
+}
+
+.profile-link-arrow {
+  color: #73907d;
+  font-size: 23px;
+}
+
+.navbar-links .profile-signout {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 12px 10px;
+  border-radius: 11px;
+  color: #b42318;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.navbar-links .profile-signout:hover {
+  background: #fff1f0;
+}
+
+.navbar-links .profile-signout:focus-visible {
+  outline: 2px solid #b42318;
+  outline-offset: -2px;
+}
+
+@media (max-width: 600px) {
+  .navbar-links .profile-trigger {
+    max-width: 220px;
+  }
+
+  .navbar-links .profile-dropdown {
+    position: fixed;
+    top: 125px;
+    right: 12px;
+  }
+}
+
+/* Account information page */
+.account-page {
+  min-height: calc(100vh - 74px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 55px 20px;
+}
+
+.account-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  border: 1px solid #dce9df;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(4, 38, 20, 0.09);
+}
+
+.account-avatar {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e0f2e5;
+  color: #0b542b;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.account-card h1 {
+  margin: 22px 0 8px;
+  color: #123d25;
+  font-size: 25px;
+}
+
+.account-subtitle {
+  margin-bottom: 25px;
+  color: #718078;
+  font-size: 14px;
+}
+
+.account-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 17px 0;
+  border-top: 1px solid #e7eee9;
+}
+
+.account-detail-row span {
+  color: #718078;
+  font-size: 13px;
+}
+
+.account-detail-row strong {
+  overflow-wrap: anywhere;
+  color: #183b28;
+  font-size: 15px;
+}
+
+.account-detail-row .account-status {
+  color: #168143;
+}
+
+.account-back-button {
+  margin-top: 20px;
+  padding: 11px 24px;
+  border: none;
+  border-radius: 10px;
+  background: #126536;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-back-button:hover {
+  background: #0b542b;
+}
+
+.profile-info-button {
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-info-button:hover {
+  background: #f0f8f2;
+}
+/* Navbar welcome message */
+.navbar-welcome {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 12px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .navbar-welcome {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  .navbar-links {
+    gap: 4px;
+  }
+}
+/* =========================================
+   AGRISHIELD — CONSISTENT GREEN RECOMMENDATION THEME
+   Risk level changes the guidance, NOT these colors.
+   ========================================= */
+
+.recommendation-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.recommendation-action-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #dcebe0;
+  border-radius: 14px;
+  background: #f5fbf6;
+  box-shadow: 0 3px 10px rgba(13, 68, 38, 0.035);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.recommendation-action-card:hover {
+  transform: translateY(-2px);
+  border-color: #b8d9c1;
+  box-shadow: 0 8px 20px rgba(17, 82, 45, 0.08);
+}
+
+.recommendation-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #e4f3e8;
+  color: #176b3a;
+  font-size: 20px;
+}
+
+.recommendation-action-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.recommendation-action-copy h4 {
+  margin: 1px 0 6px;
+  color: #155c35;
+  font-size: 0.96rem;
+  line-height: 1.35;
+}
+
+.recommendation-action-copy p {
+  margin: 0;
+  color: #526359;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.recommendation-action-number {
+  color: #91b59c;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* Keep both recommendation panels consistent for LOW / MEDIUM / HIGH risk. */
+.recommendation-panel,
+.recommended-actions-panel,
+.future-prevention-panel {
+  background: #f4fbf5 !important;
+  border-color: #dcebe0 !important;
+  color: #20352a !important;
+}
+
+@media (max-width: 760px) {
+  .recommendation-action-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recommendation-action-card {
+    padding: 14px;
+  }
+}
+/* =========================================
+   AGRISHIELD — CONSISTENT GREEN RECOMMENDATION THEME
+   Risk level changes the guidance, NOT these colors.
+   ========================================= */
+
+.recommendation-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.recommendation-action-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #dcebe0;
+  border-radius: 14px;
+  background: #f5fbf6;
+  box-shadow: 0 3px 10px rgba(13, 68, 38, 0.035);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.recommendation-action-card:hover {
+  transform: translateY(-2px);
+  border-color: #b8d9c1;
+  box-shadow: 0 8px 20px rgba(17, 82, 45, 0.08);
+}
+
+.recommendation-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #e4f3e8;
+  color: #176b3a;
+  font-size: 20px;
+}
+
+.recommendation-action-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.recommendation-action-copy h4 {
+  margin: 1px 0 6px;
+  color: #155c35;
+  font-size: 0.96rem;
+  line-height: 1.35;
+}
+
+.recommendation-action-copy p {
+  margin: 0;
+  color: #526359;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.recommendation-action-number {
+  color: #91b59c;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* Keep both recommendation panels consistent for LOW / MEDIUM / HIGH risk. */
+.recommendation-panel,
+.recommended-actions-panel,
+.future-prevention-panel {
+  background: #f4fbf5 !important;
+  border-color: #dcebe0 !important;
+  color: #20352a !important;
+}
+
+@media (max-width: 760px) {
+  .recommendation-action-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recommendation-action-card {
+    padding: 14px;
+  }
+}
+/* Personalized Dashboard Welcome */
+.dashboard-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 24px 0 28px;
+  padding: 28px 32px;
+  border: 1px solid rgba(190, 224, 201, 0.22);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(81, 164, 105, 0.22), transparent 30%),
+    linear-gradient(125deg, #0b3d26 0%, #105a35 58%, #176b3a 100%);
+  box-shadow: 0 14px 34px rgba(11, 61, 38, 0.14);
+  color: #ffffff;
+}
+.dashboard-welcome-content { min-width: 0; }
+.dashboard-welcome-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #bce6c9;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+.dashboard-welcome h2 {
+  margin: 0 0 9px;
+  color: #ffffff;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.2;
+}
+.dashboard-welcome p {
+  max-width: 680px;
+  margin: 0;
+  color: #e0efe5;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.dashboard-welcome-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #145b35;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.dashboard-welcome-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.15);
+}
+.dashboard-welcome-button:focus-visible {
+  outline: 3px solid #bce6c9;
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .dashboard-welcome {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 23px 20px;
+  }
+  .dashboard-welcome-button { width: 100%; }
 }
