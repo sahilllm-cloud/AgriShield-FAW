@@ -1,0 +1,560 @@
+
+/* ===== AGRISHIELD REGISTER PAGE ===== */
+
+.agri-register {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  min-height: calc(100vh - 66px);
+  margin: 0;
+  padding: 0;
+  background: #f5f9f6;
+  color: #183526;
+  font-family: Inter, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.agri-register,
+.agri-register * {
+  box-sizing: border-box;
+}
+
+/* LEFT BRAND PANEL */
+
+.agri-register-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 650px;
+  padding: 34px clamp(28px, 4vw, 64px) 25px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #063820 0%, #105b36 58%, #197747 100%);
+  color: #fff;
+}
+
+.agri-register-glow {
+  position: absolute;
+  top: 15%;
+  right: -130px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: rgb(143 229 164 / 12%);
+  filter: blur(55px);
+  pointer-events: none;
+}
+
+.agri-register-brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  color: #fff;
+  text-decoration: none;
+}
+
+.agri-register-logo {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 10%);
+}
+
+.agri-register-logo svg {
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+
+.agri-register-brand strong {
+  display: block;
+  color: #fff;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.agri-register-brand small {
+  display: block;
+  margin-top: 4px;
+  color: #c3e5ce;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+}
+
+.agri-register-message {
+  position: relative;
+  z-index: 1;
+  max-width: 510px;
+  margin: 55px 0;
+}
+
+.agri-register-eyebrow {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: #c0e9cc;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 2.4px;
+}
+
+.agri-register-message h1 {
+  margin: 0 0 23px;
+  color: #fff;
+  font-size: clamp(39px, 4vw, 60px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -1.8px;
+}
+
+.agri-register-message h1 span {
+  color: #b8f28a;
+}
+
+.agri-register-message > p {
+  max-width: 410px;
+  margin: 0;
+  color: #deeee3;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.agri-register-points {
+  display: grid;
+  gap: 22px;
+  margin-top: 40px;
+}
+
+.agri-register-points > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.agri-register-points > div > span {
+  flex-shrink: 0;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 10px;
+  color: #c4f19a;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.agri-register-points > div > p {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+}
+
+.agri-register-points strong {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.agri-register-points small {
+  color: #c9e1d1;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.agri-register-visual .agri-register-footer {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #c2dfcc;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+}
+
+.agri-register-visual .agri-register-footer span {
+  padding: 0 5px;
+  color: #b8f28a;
+}
+
+/* RIGHT FORM PANEL */
+
+.agri-register-form-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 650px;
+  padding: 45px clamp(28px, 5vw, 75px) 60px;
+  background: #f5f9f6;
+}
+
+.agri-register-mobile-brand {
+  display: none;
+}
+
+.agri-register-form-wrap {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.agri-register-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 37px;
+}
+
+.agri-register-top > span {
+  color: #718477;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+
+.agri-register-top > p {
+  margin: 0;
+  color: #718477;
+  font-size: 12px;
+}
+
+.agri-register-top a,
+.agri-register-bottom a {
+  color: #176b3d;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.agri-register-top a:hover,
+.agri-register-bottom a:hover {
+  text-decoration: underline;
+}
+
+.agri-register-heading {
+  margin-bottom: 27px;
+}
+
+.agri-register-heading > span {
+  display: block;
+  margin-bottom: 12px;
+  color: #47825c;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.8px;
+}
+
+.agri-register-heading h2 {
+  margin: 0 0 11px;
+  color: #173d29;
+  font-size: clamp(28px, 2.5vw, 36px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.agri-register-heading h2 span {
+  color: #21834b;
+}
+
+.agri-register-heading > p {
+  margin: 0;
+  color: #75847a;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.agri-register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  width: 100%;
+  margin: 0;
+}
+
+.agri-register-field {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.agri-register-field > label,
+.agri-register-label-row > label {
+  display: block;
+  margin: 0 0 8px;
+  color: #263e30;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.agri-register-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.agri-register-label-row > label {
+  margin: 0;
+}
+
+.agri-register-label-row > span {
+  color: #87958b;
+  font-size: 10px;
+}
+
+.agri-register-field > input,
+.agri-register-password > input {
+  display: block;
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 14px;
+  border: 1px solid #d7e2d9;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: #183526;
+  font-family: inherit;
+  font-size: 13px;
+  box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.agri-register-field input::placeholder {
+  color: #a0aca3;
+  opacity: 1;
+}
+
+.agri-register-field > input:focus,
+.agri-register-password > input:focus {
+  border-color: #27804b;
+  box-shadow: 0 0 0 3px rgb(39 128 75 / 10%);
+}
+
+.agri-register-password {
+  position: relative;
+  width: 100%;
+}
+
+.agri-register-password > input {
+  padding-right: 75px;
+}
+
+.agri-register-password > button {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  margin: 0;
+  padding: 5px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #267346;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.agri-register-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 49px;
+  margin: 4px 0 0;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 9px;
+  background: #176b3d;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.4;
+  box-shadow: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.agri-register-submit:hover {
+  transform: translateY(-1px);
+  background: #10552f;
+}
+
+.agri-register-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+.agri-register-submit > span {
+  font-size: 17px;
+}
+
+.agri-register-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0;
+  padding: 11px 13px;
+  border: 1px solid #f0c9c9;
+  border-radius: 8px;
+  background: #fff1f1;
+  color: #a52b2b;
+}
+
+.agri-register-error > span {
+  font-weight: 800;
+}
+
+.agri-register-error > p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.agri-register-terms {
+  margin: 0;
+  color: #89958c;
+  font-size: 10px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.agri-register-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #e2eae3;
+  color: #859187;
+  font-size: 11px;
+}
+
+.agri-register-copyright {
+  position: absolute;
+  right: 25px;
+  bottom: 19px;
+  color: #8b988e;
+  font-size: 10px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .agri-register {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+
+  .agri-register-visual {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .agri-register-form-side {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .agri-register-points {
+    gap: 17px;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 760px) {
+  .agri-register {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .agri-register-visual {
+    min-height: auto;
+    padding: 26px 25px 32px;
+  }
+
+  .agri-register-message {
+    margin: 42px 0 10px;
+  }
+
+  .agri-register-message h1 {
+    font-size: 42px;
+  }
+
+  .agri-register-points {
+    gap: 14px;
+    margin-top: 25px;
+  }
+
+  .agri-register-visual .agri-register-footer {
+    margin-top: 28px;
+  }
+
+  .agri-register-form-side {
+    min-height: auto;
+    padding: 34px 24px 65px;
+  }
+
+  .agri-register-form-wrap {
+    max-width: 460px;
+  }
+
+  .agri-register-top {
+    margin-bottom: 28px;
+  }
+
+  .agri-register-copyright {
+    right: 24px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .agri-register-visual {
+    padding: 22px 20px 28px;
+  }
+
+  .agri-register-brand strong {
+    font-size: 20px;
+  }
+
+  .agri-register-message h1 {
+    font-size: 36px;
+  }
+
+  .agri-register-form-side {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .agri-register-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .agri-register-heading h2 {
+    font-size: 29px;
+  }
+}
